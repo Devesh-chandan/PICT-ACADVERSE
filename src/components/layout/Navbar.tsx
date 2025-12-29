@@ -13,12 +13,14 @@ import {
   GraduationCap,
   LogOut
 } from "lucide-react";
-import ProfileDropdown from "./ProfileDropdown"; // Import the new component
+import ProfileDropdown from "./ProfileDropdown"; 
+// Import the GlareHover component - adjust path if necessary
+import GlareHover from "./GlareHover"; 
 
 const navItems = [
   { name: "PYQs", href: "/pyqs", icon: FileText },
-  { name: "Notes", href: "/notes", icon: BookOpen },
-  { name: "AI Predict", href: "/predict", icon: Sparkles },
+  // { name: "Notes", href: "/notes", icon: BookOpen },
+  // { name: "AI Predict", href: "/predict", icon: Sparkles },
   // { name: "Lab & Viva", href: "/lab", icon: FlaskConical },
   // { name: "Forum", href: "/forum", icon: MessageSquare },
   { name: "Updates", href: "/updates", icon: Bell },
@@ -45,14 +47,30 @@ const Navbar = () => {
     <nav className="fixed top-0 left-0 right-0 z-50 glass border-b border-border/50">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <Link to="/home" className="flex items-center gap-2 group">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-              <GraduationCap className="w-6 h-6 text-primary-foreground" />
-            </div>
-            <span className="font-bold text-xl hidden sm:block">
-              <span className="text-foreground"> PICT-ACADVERSE</span>
-            </span>
+          
+          {/* Logo with Glare Effect */}
+          <Link to="/home" className="group">
+            <GlareHover
+              width="auto"
+              height="auto"
+              background="transparent" // Important: Keeps it looking like a logo, not a card
+              borderRadius="12px"
+              borderColor="transparent"
+              autoPlay={true}          // Enables the automatic animation
+              interval={3000}          // Runs every 5 seconds
+              disableHover={true}      // Prevents mouse interaction
+              transitionDuration={1000} // Slower transition for a smoother 'shine'
+              className="px-2 py-1"    // Adds breathing room for the glare
+            >
+              <div className="flex items-center gap-2">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                  <GraduationCap className="w-6 h-6 text-primary-foreground" />
+                </div>
+                <span className="font-bold text-xl hidden sm:block">
+                  <span className="text-foreground"> PICT-ACADVERSE</span>
+                </span>
+              </div>
+            </GlareHover>
           </Link>
 
           {/* Desktop Navigation */}

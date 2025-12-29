@@ -9,14 +9,13 @@ import { toast } from 'sonner';
 import { BookOpen, FileText, FlaskConical, Users, MessageSquare, Bell } from 'lucide-react';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
+import { Plasma } from '@/components/ui/Plasma';
 
-// NOTE: axios is not defined in the available files, so we're mocking the import/usage.
-// For a real application, you would need to install it (`npm install axios`) and configure your API endpoint.
-// import axios from 'axios'; 
-
+// Modified FeatureCard to include the exact glow effect from the Login Card
 const FeatureCard = ({ icon, title, description, color }: { icon: JSX.Element, title: string, description: string, color: string }) => {
-    // Map custom colors to Tailwind classes using the design tokens (e.g., primary, accent, success)
-    const colorClasses: Record<string, string> = {
+    
+    // Map for internal Icon background colors
+    const iconColorClasses: Record<string, string> = {
         primary: 'bg-primary/10 text-primary',
         accent: 'bg-accent/10 text-accent',
         success: 'bg-emerald-500/10 text-emerald-500',
@@ -26,12 +25,18 @@ const FeatureCard = ({ icon, title, description, color }: { icon: JSX.Element, t
     };
 
     return (
-        <div className="p-8 rounded-2xl border border-border hover:shadow-lg hover:-translate-y-1 transition-all duration-300 bg-card">
-            <div className={`w-16 h-16 rounded-xl ${colorClasses[color]} flex items-center justify-center mb-6`}>
-                {icon}
+        <div className="relative group hover:-translate-y-1 transition-all duration-300">
+            {/* Glow Effect Layer - Matches Login Card Exactly */}
+            <div className="absolute -inset-0.5 bg-gradient-to-r from-primary to-purple-600 rounded-2xl blur opacity-30 dark:opacity-50 transition duration-500 group-hover:opacity-70 group-hover:blur-md"></div>
+            
+            {/* Main Card Content */}
+            <div className="relative h-full p-8 rounded-2xl border border-white/50 dark:border-gray-700 bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl ring-1 ring-black/5 dark:ring-white/10 shadow-lg hover:shadow-xl transition-all">
+                <div className={`w-16 h-16 rounded-xl ${iconColorClasses[color]} flex items-center justify-center mb-6`}>
+                    {icon}
+                </div>
+                <h3 className="text-xl font-bold text-foreground mb-3">{title}</h3>
+                <p className="text-muted-foreground leading-relaxed">{description}</p>
             </div>
-            <h3 className="text-xl font-bold text-foreground mb-3">{title}</h3>
-            <p className="text-muted-foreground leading-relaxed">{description}</p>
         </div>
     );
 };
@@ -59,10 +64,8 @@ const AuthLanding = () => {
                  throw new Error("Invalid credentials or user already exists.");
             }
 
-            // SUCCESS MESSAGE AND REDIRECTION
             toast.success(isLogin ? 'Login successful! Redirecting to Home.' : 'Registration successful! Please log in.');
             
-            // Redirect to the original home page (/home) upon successful login
             if (isLogin) {
                  window.location.href = "/home"; 
             } else {
@@ -85,72 +88,52 @@ const AuthLanding = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-blue-50 dark:from-gray-900 dark:via-gray-800 dark:to-indigo-950">
-            {/* The Navbar component handles its own conditional rendering based on the URL path */}
+        <div className="min-h-screen relative overflow-x-hidden font-sans">
+            {/* --- FIXED BACKGROUND --- */}
+            <div className="fixed inset-0 -z-10 w-full h-full bg-slate-50 dark:bg-gray-950">
+                <div className="absolute inset-0">
+                     <Plasma 
+                        color="#4f46e5" 
+                        speed={1.5}
+                        scale={1.2}
+                        opacity={0.6}
+                     />
+                </div>
+            </div>
+            
             <Navbar /> 
             
-            <section className="relative overflow-hidden pt-16">
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-accent/10 dark:from-primary/5 dark:to-accent/5"></div>
+            <section className="relative pt-16">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 relative">
                     <div className="grid md:grid-cols-2 gap-12 items-center">
                         <div className="space-y-8 animate-fade-in">
-                            <div className="inline-block">
-                                <span className="px-4 py-2 bg-primary/10 text-primary dark:bg-primary/20 rounded-full text-sm font-semibold">
-                                    PICT Autonomous Edition
-                                </span>
-                            </div>
-                            <h1 className="text-5xl lg:text-6xl font-extrabold text-foreground leading-tight">
+                            
+                            <h1 className="text-5xl lg:text-6xl font-extrabold text-foreground leading-tight drop-shadow-sm">
                                 Your Academic
-                                <span className="block gradient-text">Universe</span>
+                                <span className="block text-primary">Universe</span>
                             </h1>
-                            <p className="text-xl text-muted-foreground leading-relaxed">
+                            <p className="text-xl text-muted-foreground leading-relaxed max-w-lg">
                                 One-stop platform for PYQs, Notes, Lab Codes, Viva Questions, and more. Built by students, for students.
                             </p>
-                            <div className="flex flex-wrap gap-4">
-                                <div className="flex items-center gap-2">
-                                    <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-                                        <BookOpen className="w-6 h-6 text-primary" />
-                                    </div>
-                                    <div>
-                                        <p className="font-semibold text-foreground">10K+</p>
-                                        <p className="text-sm text-muted-foreground">Questions</p>
-                                    </div>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center">
-                                        <FileText className="w-6 h-6 text-accent" />
-                                    </div>
-                                    <div>
-                                        <p className="font-semibold text-foreground">500+</p>
-                                        <p className="text-sm text-muted-foreground">Notes</p>
-                                    </div>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <div className="w-12 h-12 rounded-full bg-emerald-500/10 flex items-center justify-center">
-                                        <Users className="w-6 h-6 text-emerald-500" />
-                                    </div>
-                                    <div>
-                                        <p className="font-semibold text-foreground">5K+</p>
-                                        <p className="text-sm text-muted-foreground">Students</p>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
 
-                        {/* Auth Card */}
-                        <div className="animate-slide-in">
-                            <Card className="shadow-2xl border-border/50 bg-card/80 backdrop-blur-sm">
-                                <CardHeader className="space-y-2">
-                                    <CardTitle className="text-2xl">{isLogin ? 'Welcome Back' : 'Join PICT Hub'}</CardTitle>
-                                    <CardDescription>
+                        {/* --- AUTH CARD SECTION --- */}
+                        <div className="animate-slide-in relative group">
+                            {/* Decorative Glow Layer - Restored */}
+                            <div className="absolute -inset-0.5 bg-gradient-to-r from-primary to-purple-600 rounded-2xl blur opacity-30 dark:opacity-50 transition duration-500 group-hover:opacity-70 group-hover:blur-md"></div>
+                            
+                            <Card className="relative shadow-2xl border-white/50 dark:border-gray-700 bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl ring-1 ring-black/5 dark:ring-white/10">
+                                <CardHeader className="space-y-2 pb-6">
+                                    <CardTitle className="text-3xl font-bold tracking-tight text-center">{isLogin ? 'Welcome Back' : 'Join PICT Hub'}</CardTitle>
+                                    <CardDescription className="text-center text-base">
                                         {isLogin ? 'Sign in to access your resources' : 'Create your account to get started'}
                                     </CardDescription>
                                 </CardHeader>
                                 <CardContent>
                                     <Tabs value={isLogin ? 'login' : 'register'} onValueChange={(v) => setIsLogin(v === 'login')}>
-                                        <TabsList className="grid w-full grid-cols-2 mb-6">
-                                            <TabsTrigger value="login">Login</TabsTrigger>
-                                            <TabsTrigger value="register">Register</TabsTrigger>
+                                        <TabsList className="grid w-full grid-cols-2 mb-6 p-1 bg-gray-100/80 dark:bg-gray-800/80">
+                                            <TabsTrigger value="login" className="rounded-sm data-[state=active]:bg-white data-[state=active]:shadow-sm dark:data-[state=active]:bg-gray-700">Login</TabsTrigger>
+                                            <TabsTrigger value="register" className="rounded-sm data-[state=active]:bg-white data-[state=active]:shadow-sm dark:data-[state=active]:bg-gray-700">Register</TabsTrigger>
                                         </TabsList>
                                         <TabsContent value="login">
                                             <form onSubmit={handleSubmit} className="space-y-4">
@@ -164,6 +147,7 @@ const AuthLanding = () => {
                                                         value={formData.email}
                                                         onChange={handleChange}
                                                         required
+                                                        className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-primary/20 transition-all"
                                                     />
                                                 </div>
                                                 <div className="space-y-2">
@@ -176,9 +160,10 @@ const AuthLanding = () => {
                                                         value={formData.password}
                                                         onChange={handleChange}
                                                         required
+                                                        className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-primary/20 transition-all"
                                                     />
                                                 </div>
-                                                <Button type="submit" className="w-full" disabled={loading} variant="hero">
+                                                <Button type="submit" className="w-full h-11 text-base font-medium shadow-md hover:shadow-lg transition-all" disabled={loading} variant="default">
                                                     {loading ? 'Signing in...' : 'Sign In'}
                                                 </Button>
                                             </form>
@@ -194,6 +179,7 @@ const AuthLanding = () => {
                                                         value={formData.name}
                                                         onChange={handleChange}
                                                         required
+                                                        className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-primary/20 transition-all"
                                                     />
                                                 </div>
                                                 <div className="space-y-2">
@@ -206,6 +192,7 @@ const AuthLanding = () => {
                                                         value={formData.email}
                                                         onChange={handleChange}
                                                         required
+                                                        className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-primary/20 transition-all"
                                                     />
                                                 </div>
                                                 <div className="space-y-2">
@@ -218,13 +205,14 @@ const AuthLanding = () => {
                                                         value={formData.password}
                                                         onChange={handleChange}
                                                         required
+                                                        className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-primary/20 transition-all"
                                                     />
                                                 </div>
                                                 <div className="grid grid-cols-2 gap-4">
                                                     <div className="space-y-2">
                                                         <Label htmlFor="branch">Branch</Label>
                                                         <Select name="branch" value={formData.branch} onValueChange={(v) => handleSelectChange('branch', v)}>
-                                                            <SelectTrigger>
+                                                            <SelectTrigger className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
                                                                 <SelectValue placeholder="Select" />
                                                             </SelectTrigger>
                                                             <SelectContent>
@@ -239,7 +227,7 @@ const AuthLanding = () => {
                                                     <div className="space-y-2">
                                                         <Label htmlFor="year">Year</Label>
                                                         <Select name="year" value={String(formData.year)} onValueChange={(v) => handleSelectChange('year', v)}>
-                                                            <SelectTrigger>
+                                                            <SelectTrigger className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
                                                                 <SelectValue placeholder="Select" />
                                                             </SelectTrigger>
                                                             <SelectContent>
@@ -251,7 +239,7 @@ const AuthLanding = () => {
                                                         </Select>
                                                     </div>
                                                 </div>
-                                                <Button type="submit" className="w-full" disabled={loading} variant="gradient">
+                                                <Button type="submit" className="w-full h-11 text-base font-medium shadow-md hover:shadow-lg transition-all" disabled={loading} variant="default">
                                                     {loading ? 'Creating Account...' : 'Create Account'}
                                                 </Button>
                                             </form>
@@ -264,7 +252,7 @@ const AuthLanding = () => {
                 </div>
             </section>
 
-            <section className="py-20 bg-card">
+            <section className="py-20 relative z-10">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-16">
                         <h2 className="text-4xl font-bold text-foreground mb-4">Everything You Need</h2>

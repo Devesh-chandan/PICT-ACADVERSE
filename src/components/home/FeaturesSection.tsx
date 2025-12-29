@@ -38,14 +38,14 @@ const features = [
     badgeVariant: "info" as const,
     highlights: ["98% accuracy", "Confidence scores", "Topic analysis"],
   },
-  {
-    icon: FlaskConical,
-    title: "Lab & Viva Bank",
-    description: "Complete lab experiment codes with expected viva questions and model answers.",
-    badge: "Practical Ready",
-    badgeVariant: "success" as const,
-    highlights: ["Code snippets", "Output screenshots", "Viva prep"],
-  },
+  // {
+  //   icon: FlaskConical,
+  //   title: "Lab & Viva Bank",
+  //   description: "Complete lab experiment codes with expected viva questions and model answers.",
+  //   badge: "Practical Ready",
+  //   badgeVariant: "success" as const,
+  //   highlights: ["Code snippets", "Output screenshots", "Viva prep"],
+  // },
   {
     icon: MessageSquare,
     title: "Discussion Forum",

@@ -1,0 +1,49 @@
+/* Custom Cursor Container */
+.target-cursor-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  z-index: 9999;
+  will-change: transform;
+}
+
+/* The Center Aiming Dot */
+.target-cursor-dot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 4px;
+  height: 4px;
+  background-color: white;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  will-change: transform;
+}
+
+/* The Snapping Brackets */
+.target-cursor-corner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 12px;
+  height: 12px;
+  border: 2px solid white;
+  will-change: transform;
+  transition: border-color 0.3s ease;
+}
+
+/* Specific Corner Clipping to create "L" shapes */
+.corner-tl { border-right: 0; border-bottom: 0; transform: translate(-150%, -150%); }
+.corner-tr { border-left: 0; border-bottom: 0; transform: translate(50%, -150%); }
+.corner-br { border-left: 0; border-top: 0; transform: translate(50%, 50%); }
+.corner-bl { border-right: 0; border-top: 0; transform: translate(-150%, 50%); }
+
+/* Class added when cursor is locked on a button */
+.cursor-locked .target-cursor-corner {
+  border-color: hsl(var(--primary));
+  width: 15px;
+  height: 15px;
+}
