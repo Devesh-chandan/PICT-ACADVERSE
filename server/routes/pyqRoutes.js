@@ -1,72 +1,88 @@
-// server/routes/pyqRoutes.js
 import express from 'express';
 import multer from 'multer';
-import path from 'path';
-import fs from 'fs';
-import Pyq from '../models/Pyq.js';
+import { v2 as cloudinary } from 'cloudinary';
+import { CloudinaryStorage } from 'multer-storage-cloudinary';
+import Pyq from '../models/Pyq.js'; 
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const router = express.Router();
 
-// 1. Configure Multer Storage
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    const dir = 'uploads/';
-    // Create folder if it doesn't exist
-    if (!fs.existsSync(dir)){
-        fs.mkdirSync(dir);
-    }
-    cb(null, dir);
+// --- 1. Cloudinary Config ---
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+});
+
+// --- 2. Multer Storage Engine ---
+// const storage = new CloudinaryStorage({
+//   cloudinary: cloudinary,
+//   params: {
+//     folder: 'examorbit_pyqs',
+//     resource_type: 'auto', // Auto-detects PDF vs Image
+//     allowed_formats: ['pdf', 'doc', 'docx', 'jpg', 'png'],
+//     // FIX: This keeps the original filename (sanitized)
+//     public_id: (req, file) => {
+//       // Remove extension and replace special chars with underscore
+//       return file.originalname.replace(/\.[^/.]+$/, "").replace(/[^a-zA-Z0-9]/g, "_");
+//     }
+//   },
+// });
+
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: async (req, file) => {
+    // 1. Determine if it's an image or a raw file (PDF/Doc)
+    const isImage = file.mimetype.startsWith('image/');
+    
+    return {
+      folder: 'examorbit_pyqs',
+      // If it's an image, use 'image', otherwise use 'raw' (for PDFs)
+      resource_type: isImage ? 'image' : 'raw', 
+      format: isImage ? undefined : 'pdf', // Force format for PDFs
+      public_id: file.originalname.replace(/\.[^/.]+$/, "").replace(/[^a-zA-Z0-9]/g, "_"),
+    };
   },
-  filename: (req, file, cb) => {
-    // Unique filename: fieldname-timestamp.ext
-    cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
-  }
 });
 
 const upload = multer({ storage: storage });
 
-// GET Routes (Keep existing search logic)
+// --- 3. GET All Papers ---
 router.get('/', async (req, res) => {
-    // ... (Keep your existing GET logic from the previous guide)
-    try {
-        const { subject, year, type, difficulty, search } = req.query;
-        let query = {};
-        if (subject && subject !== 'All') query.code = subject;
-        if (year && year !== 'All') query.year = parseInt(year);
-        if (type && type !== 'All') query.type = type;
-        if (difficulty && difficulty !== 'All') query.difficulty = difficulty;
-
-        if (search) {
-            query.$or = [
-                { question: { $regex: search, $options: 'i' } },
-                { subject: { $regex: search, $options: 'i' } }
-            ];
-        }
-        const pyqs = await Pyq.find(query).sort({ createdAt: -1 });
-        res.json(pyqs);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
+  try {
+    const papers = await Pyq.find().sort({ createdAt: -1 });
+    res.json(papers);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 });
 
-// POST Route - NOW WITH FILE UPLOAD
-// 'file' matches the name attribute in the frontend form
+// --- 4. POST (Upload) Route ---
+// NOTE: 'file' must match formData.append('file', ...) on frontend
 router.post('/', upload.single('file'), async (req, res) => {
   try {
-    // Create full URL for the uploaded file
-    const fileUrl = req.file ? `http://localhost:5000/uploads/${req.file.filename}` : null;
+    if (!req.file) {
+      return res.status(400).json({ message: "No file uploaded" });
+    }
 
-    const newPyq = new Pyq({
-      ...req.body, // Text fields (subject, year, etc.)
-      fileUrl: fileUrl, // Save the generated URL
-      // If user didn't provide a "question" text, use the filename or a default
-      question: req.body.question || `Question Paper - ${req.body.subject} ${req.body.year}` 
+    console.log("✅ File Uploaded to:", req.file.path);
+
+    const newPaper = new Pyq({
+      subject: req.body.subject,
+      year: req.body.year,
+      paperType: req.body.paperType,
+      title: req.body.title,
+      fileUrl: req.file.path, // URL from Cloudinary (now has .pdf extension)
     });
 
-    const savedPyq = await newPyq.save();
-    res.status(201).json(savedPyq);
+    const savedPaper = await newPaper.save();
+    res.status(201).json(savedPaper);
+
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    console.error("❌ Upload Error:", error);
+    res.status(500).json({ message: "Upload failed", error: error.message });
   }
 });
 
