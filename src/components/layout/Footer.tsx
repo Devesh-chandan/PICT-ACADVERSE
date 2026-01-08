@@ -1,245 +1,207 @@
-// import React from 'react';
-// import { Link } from "react-router-dom";
-// import { GraduationCap } from "lucide-react";
-// import ChromaGrid, { ChromaItem } from './ChromaGrid';
-// import SocialButtons from './SocialButtons'; // Import the new buttons
-
-// const Footer = () => {
-  
-//   // Configuration for the 4 Creator Cards
-//   const creators: ChromaItem[] = [
-//     {
-//       image: 'https://i.pravatar.cc/300?img=12', // Replace with real photo
-//       title: 'Dev One',
-//       subtitle: 'Full Stack Lead',
-//       handle: '@dev_one',
-//       borderColor: '#4F46E5', // Indigo
-//       gradient: 'linear-gradient(145deg, #312e81, #000)',
-//       url: 'https://github.com/'
-//     },
-//     {
-//       image: 'https://i.pravatar.cc/300?img=33', // Replace with real photo
-//       title: 'Dev Two',
-//       subtitle: 'Frontend Architect',
-//       handle: '@dev_two',
-//       borderColor: '#10B981', // Emerald
-//       gradient: 'linear-gradient(145deg, #064e3b, #000)',
-//       url: 'https://linkedin.com/'
-//     },
-//     {
-//       image: 'https://i.pravatar.cc/300?img=59', // Replace with real photo
-//       title: 'Dev Three',
-//       subtitle: 'Backend & Database',
-//       handle: '@dev_three',
-//       borderColor: '#F59E0B', // Amber
-//       gradient: 'linear-gradient(145deg, #78350f, #000)',
-//       url: 'https://dribbble.com/'
-//     },
-//     {
-//       image: 'https://i.pravatar.cc/300?img=8', // Replace with real photo
-//       title: 'Dev Four',
-//       subtitle: 'UI/UX Designer',
-//       handle: '@dev_four',
-//       borderColor: '#EC4899', // Pink
-//       gradient: 'linear-gradient(145deg, #831843, #000)',
-//       url: 'https://twitter.com/'
-//     }
-//   ];
-
-//   return (
-//     <footer className="border-t border-border bg-card/50 relative z-10">
-//       <div className="container mx-auto px-4 py-12">
-//         {/* Top Section: Main Links */}
-//         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-16">
-//           {/* Brand */}
-//           <div className="space-y-2 ">
-//             <Link to="/home" className="flex items-center gap-2">
-//               {/* <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center">
-//                 <GraduationCap className="w-6 h-6 text-primary-foreground" />
-//               </div> */}
-//               <span className="font-bold text-xl align-items-center">
-//                    PICT-ACADVERSE
-//               </span>
-//             </Link>
-//             <p className="text-muted-foreground text-sm max-w-[220px] ">
-//               Your one-stop academic universe for PICT Autonomous. Access PYQs, notes, and more.
-//             </p>
-//           </div>
-
-//           {/* Resources */}
-//           <div>
-//             <h4 className="font-semibold mb-4">Resources</h4>
-//             <ul className="space-y-2 text-sm text-muted-foreground">
-//               <li><Link to="/pyqs" className="hover:text-primary transition-colors">PYQ Repository</Link></li>
-//               <li><Link to="/notes" className="hover:text-primary transition-colors">Notes Vault</Link></li>
-//               <li><Link to="/predict" className="hover:text-primary transition-colors">AI Predictions</Link></li>
-//             </ul>
-//           </div>
-
-//           {/* Community */}
-//           <div>
-//             <h4 className="font-semibold mb-4">Community</h4>
-//             <ul className="space-y-2 text-sm text-muted-foreground">
-//               <li><Link to="/forum" className="hover:text-primary transition-colors">Discussion Forum</Link></li>
-//               <li><Link to="/updates" className="hover:text-primary transition-colors">Exam Updates</Link></li>
-//               <li><a href="#" className="hover:text-primary transition-colors">Contribute</a></li>
-//               <li><a href="#" className="hover:text-primary transition-colors">Guidelines</a></li>
-//             </ul>
-//           </div>
-
-//           {/* Connect */}
-//           <div>
-//             <h4 className="font-semibold mb-4">Connect</h4>
-//             {/* The new Social Buttons Component */}
-//             <SocialButtons />
-//           </div>
-//         </div>
-
-//         {/* Middle Section: Creators ChromaGrid
-//         <div className="border-t border-border/50 py-12">
-//           <div className="text-center mb-10">
-//             <h3 className="text-2xl font-bold mb-2">Architects of the Verse</h3>
-//             <p className="text-muted-foreground text-sm">The minds behind PICT-ACADVERSE</p>
-//           </div>
-          
-//           <div className="w-full flex justify-center">
-//             <ChromaGrid 
-//               items={creators} 
-//               radius={200} 
-//               className="justify-center"
-//             />
-//           </div>
-//         </div> */}
-
-//         {/* Bottom Section: Copyright */}
-//         <div className="border-t border-border pt-8 text-center text-sm text-muted-foreground">
-//           <p>© 2025 PICT ACADVERSE. Made with ❤️ for students.</p>
-//         </div>
-//       </div>
-//     </footer>
-//   );
-// };
-
-// export default Footer;
-
-
-
-
 import React from 'react';
 import { Link } from "react-router-dom";
-import { GraduationCap } from "lucide-react";
-import ChromaGrid, { ChromaItem } from './ChromaGrid';
-import SocialButtons from './SocialButtons'; 
+import {
+  GraduationCap,
+  Twitter,
+  Github,
+  Linkedin,
+  MessageSquare,
+  Send
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 const Footer = () => {
-  
-  // Configuration for the 4 Creator Cards
-  const creators: ChromaItem[] = [
-    {
-      image: 'https://i.pravatar.cc/300?img=12', 
-      title: 'Dev One',
-      subtitle: 'Full Stack Lead',
-      handle: '@dev_one',
-      borderColor: '#4F46E5', 
-      gradient: 'linear-gradient(145deg, #312e81, #000)',
-      url: 'https://github.com/'
-    },
-    {
-      image: 'https://i.pravatar.cc/300?img=33', 
-      title: 'Dev Two',
-      subtitle: 'Frontend Architect',
-      handle: '@dev_two',
-      borderColor: '#10B981', 
-      gradient: 'linear-gradient(145deg, #064e3b, #000)',
-      url: 'https://linkedin.com/'
-    },
-    {
-      image: 'https://i.pravatar.cc/300?img=59', 
-      title: 'Dev Three',
-      subtitle: 'Backend & Database',
-      handle: '@dev_three',
-      borderColor: '#F59E0B', 
-      gradient: 'linear-gradient(145deg, #78350f, #000)',
-      url: 'https://dribbble.com/'
-    },
-    {
-      image: 'https://i.pravatar.cc/300?img=8', 
-      title: 'Dev Four',
-      subtitle: 'UI/UX Designer',
-      handle: '@dev_four',
-      borderColor: '#EC4899', 
-      gradient: 'linear-gradient(145deg, #831843, #000)',
-      url: 'https://twitter.com/'
-    }
-  ];
-
+  const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
   return (
-    <footer className="border-t border-border bg-card/50 relative z-10">
-      <div className="container mx-auto px-4 py-12">
-        {/* Top Section: Main Links */}
-        {/* Added 'text-center' to the grid container */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-16 text-center">
+    <footer className="relative w-full border-t border-white/10 bg-[#020617]/95 backdrop-blur-2xl pt-12 pb-6 overflow-hidden z-50">
+      {/* --- Aesthetic Elements --- */}
+
+      {/* 1. Top Gradient Line */}
+
+      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-purple-500/50 to-transparent" />
+
+     
+
+      {/* 2. Ambient Purple Glow (New Vibe) */}
+
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[500px] h-[200px] bg-purple-600/10 blur-[100px] rounded-full pointer-events-none" />
 
 
 
-          {/* Brand Column */}
-<div className="space-y-2 flex flex-col items-center">
-  
-  {/* Update the Link with onClick */}
-  <Link 
-    to="/home" 
-    className="flex items-center justify-center gap-2"
-    onClick={() => window.scrollTo(0, 0)}
-  >
-    <span className="font-bold text-xl align-items-center">
-      PICT-ACADVERSE
-    </span>
-  </Link>
-  
-  <p className="text-muted-foreground text-sm max-w-[220px] mx-auto">
-    Your one-stop academic universe for PICT Autonomous. Access PYQs, notes, and more.
-  </p>
-</div>
+      <div className="container relative mx-auto px-6 md:px-12 z-10">
 
-          {/* Resources - Added flex-col & items-center */}
-          <div className="flex flex-col items-center">
-            <h4 className="font-semibold mb-4">Resources</h4>
-            <ul className="space-y-2 text-sm text-muted-foreground">
-              <li><Link to="/pyqs" className="hover:text-primary transition-colors">PYQ Repository</Link></li>
-              <li><Link to="/updates" className="hover:text-primary transition-colors">Updates</Link></li>
-              {/* <li><Link to="/notes" className="hover:text-primary transition-colors">Notes Vault</Link></li>
-              <li><Link to="/predict" className="hover:text-primary transition-colors">AI Predictions</Link></li> */}
-            </ul>
-          </div>
+       
 
-          {/* Community - Added flex-col & items-center */}
-          <div className="flex flex-col items-center">
-            <h4 className="font-semibold mb-4">Community</h4>
-            <ul className="space-y-2 text-sm text-muted-foreground">
-              <li><Link to="/forum" className="hover:text-primary transition-colors">Discussion Forum</Link></li>
-              <li><Link to="/updates" className="hover:text-primary transition-colors">Exam Updates</Link></li>
-              <li><a href="#" className="hover:text-primary transition-colors">Contribute</a></li>
-              <li><a href="#" className="hover:text-primary transition-colors">Guidelines</a></li>
-            </ul>
-          </div>
+        {/* Main Grid: Compacted spacing (gap-8, mb-10) */}
 
-          {/* Connect - Added flex-col & items-center */}
-          <div className="flex flex-col items-center">
-            <h4 className="font-semibold mb-4">Connect</h4>
-            {/* Wrapped SocialButtons in a centered flex div to ensure alignment */}
-            <div className="flex justify-center w-full">
-               <SocialButtons />
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-8 mb-10 items-start">
+
+
+
+          {/* 1. BRAND SECTION (Span 4) */}
+
+          <div className="lg:col-span-4 flex flex-col items-start space-y-4">
+
+            <Link to="/home" onClick={scrollToTop} className="flex items-center gap-3 group">
+
+              <div className="p-2 rounded-xl bg-gradient-to-br from-purple-500/10 to-blue-600/10 border border-purple-500/20 group-hover:border-purple-500/50 transition-all duration-300">
+
+                 <GraduationCap className="h-6 w-6 text-purple-400 group-hover:text-purple-300 transition-colors" />
+
+              </div>
+
+              <span className="text-xl font-bold tracking-wide text-white">
+
+                ACADVERSE<span className="text-purple-500">-UPDATES</span>
+
+              </span>
+
+            </Link>
+
+           
+
+            <p className="text-slate-400 text-sm leading-snug max-w-sm">
+
+              Master your engineering exams with AI-driven predictions.
+
+              The all-in-one platform tailored for PICT students.
+
+            </p>
+
+
+
+            <div className="flex items-center gap-2 pt-2">
+
+               {[Twitter, Github, Linkedin].map((Icon, i) => (
+
+                 <a key={i} href="#" className="p-2 rounded-full bg-white/5 border border-white/5 hover:bg-purple-500/10 hover:border-purple-500/30 hover:text-purple-400 text-slate-400 transition-all duration-300">
+
+                   <Icon className="h-4 w-4" />
+
+                 </a>
+
+               ))}
+
             </div>
+
           </div>
+
+
+
+          {/* 2. NAVIGATION LINKS (Span 4) */}
+
+          <div className="lg:col-span-4 flex flex-col lg:items-center space-y-4">
+
+            <div className="flex flex-col space-y-4 w-full max-w-[140px]">
+
+              <h4 className="font-semibold text-white tracking-wide text-sm relative inline-block">
+
+                Platform
+
+                <span className="absolute -bottom-2 left-0 w-8 h-0.5 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full"></span>
+
+              </h4>
+
+              <ul className="space-y-3 text-sm text-slate-400">
+
+                {['Home', 'PYQ Repository', 'Exam Updates', 'Dashboard'].map((item) => (
+
+                  <li key={item}>
+
+                    <Link
+
+                      to={`/${item.toLowerCase().replace(' ', '')}`}
+
+                      onClick={scrollToTop}
+
+                      className="hover:text-purple-400 hover:translate-x-1 transition-all inline-block"
+
+                    >
+
+                      {item}
+
+                    </Link>
+
+                  </li>
+
+                ))}
+
+              </ul>
+
+            </div>
+
+          </div>
+
+
+
+          {/* 3. FEEDBACK FORM (Span 4) */}
+
+          <div className="lg:col-span-4 flex flex-col space-y-4">
+
+            <div className="flex items-center gap-2 text-white">
+
+              <MessageSquare className="h-4 w-4 text-purple-400" />
+
+              <h4 className="font-semibold tracking-wide text-sm">Have a Query?</h4>
+
+            </div>
+
+           
+
+            <form className="flex flex-col gap-3" onSubmit={(e) => e.preventDefault()}>
+
+              <Input
+
+                placeholder="Your email"
+
+                className="bg-white/5 border-white/10 text-white placeholder:text-slate-500 focus-visible:ring-purple-500/50 focus-visible:border-purple-500/50 transition-all h-9 text-xs rounded-lg"
+
+              />
+
+             
+
+              <textarea
+
+                placeholder="Type your feedback here..."
+
+                className="flex h-20 w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-xs text-white ring-offset-background placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500/50 resize-none transition-all"
+
+              />
+
+             
+
+              <Button className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-white font-medium h-9 text-xs rounded-lg shadow-lg shadow-purple-500/20 transition-all hover:scale-[1.02]">
+
+                Send Message <Send className="ml-2 h-3 w-3" />
+
+              </Button>
+
+            </form>
+
+          </div>
+
+
+
         </div>
 
-        {/* Bottom Section: Copyright */}
-        <div className="border-t border-border pt-8 text-center text-sm text-muted-foreground">
-          <p>© 2025 PICT ACADVERSE. Made with ❤️ for students.</p>
+
+
+        {/* Bottom Bar */}
+
+        <div className="pt-6 border-t border-white/5 flex justify-center items-center text-xs text-slate-500">
+
+          <p>© 2026 Acadverse. Made for Engineers.</p>
+
         </div>
+
       </div>
-    </footer>
-  );
-};
 
+    </footer>
+
+  );
+
+};
 export default Footer;
+
+
