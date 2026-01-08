@@ -555,11 +555,9 @@
 
 
 
-
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button"; 
-import { RippleButton } from "@/components/ui/ripple-button"; 
 import { 
   Menu,
   X,
@@ -572,6 +570,13 @@ import ProfileDropdown from "./ProfileDropdown";
 import GlareHover from "./GlareHover"; 
 import styled from "styled-components";
 import { cn } from "@/lib/utils";
+
+// Import the Menubar components
+import {
+  Menubar,
+  MenubarMenu,
+  MenubarTrigger,
+} from "@/components/ui/menubar";
 
 // ------------------------------------
 // 1. Data & Types
@@ -604,6 +609,7 @@ const Navbar = () => {
   const isLoginPage = location.pathname === '/';
   if (isLoginPage) return null;
 
+  // Handle Scroll Effect
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
@@ -617,6 +623,7 @@ const Navbar = () => {
       <nav
         className={cn(
           "mx-auto transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] border border-transparent will-change-transform",
+          // Scroll State changes
           isScrolled 
             ? "bg-black/60 backdrop-blur-md border-white/10 max-w-5xl rounded-full shadow-[0_8px_32px_0_rgba(0,0,0,0.36)]" 
             : "max-w-7xl bg-transparent"
@@ -662,54 +669,39 @@ const Navbar = () => {
             </Link>
           </div>
 
-          {/* CENTER: Navigation (Ripple Buttons) */}
-          <div className="hidden lg:flex absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 gap-3"> 
-            {navItems.map((item) => {
-              const IconComponent = item.icon;
+          {/* CENTER: Navigation (ABSOLUTELY CENTERED) */}
+          <div className="hidden lg:block absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10"> 
+            <Menubar className="border-none bg-transparent shadow-none space-x-2">
+              {navItems.map((item) => {
+                const isActive = location.pathname === item.href;
+                const IconComponent = item.icon;
 
-              return (
-                <Link key={item.name} to={item.href}>
-                  <RippleButton
-                    rippleColor="#ADD8E6"
-                    className={cn(
-                      // Base Layout & Colors
-                      // RESIZED: h-10 (40px) and min-w-[90px] matches Dashboard button better
-                      "group relative flex items-center justify-center min-w-[90px] h-10 rounded-full border border-transparent bg-transparent overflow-hidden",
-                      "text-gray-400 font-medium text-sm tracking-wide transition-all duration-300",
-                      
-                      // HOVER EFFECTS:
-                      "hover:bg-white/5",
-                      "hover:text-white",
-                      "hover:shadow-[0_0_20px_rgba(173,216,230,0.4)]"
-                    )}
-                  >
-                     {/* 1. Text Wrapper: Slides UP on hover */}
-                     <span
-                       className={cn(
-                         "relative z-10 block transition-all duration-300 ease-in-out",
-                         // On hover: Translate UP by 8 units and fade out
-                         "group-hover:-translate-y-8 group-hover:opacity-0"
-                       )}
-                     >
-                       {item.name}
-                     </span>
+                return (
+                  <MenubarMenu key={item.name}>
+                    <Link to={item.href}>
+                      <MenubarTrigger 
+                        className={cn(
+                          "cursor-pointer transition-all duration-300 px-6 py-2 rounded-full group relative overflow-hidden min-w-[100px] flex items-center justify-center",
+                          // Active State: Neutral white/transparent, no teal
+                          isActive 
+                            ? "bg-white/10 text-white font-medium border border-white/10" 
+                            : "text-gray-400 hover:text-white hover:bg-white/5"
+                        )}
+                      >
+                        {/* 1. Name: Visible by default, slides up on hover */}
+                        <span className="transition-transform duration-300 group-hover:-translate-y-[150%] block">
+                          {item.name}
+                        </span>
 
-                     {/* 2. Icon Wrapper: Slides UP from bottom on hover */}
-                     <div
-                       className={cn(
-                         "absolute inset-0 flex items-center justify-center transition-all duration-300 ease-in-out",
-                         // Default: positioned below view (translate-y-8) and invisible
-                         "translate-y-8 opacity-0",
-                         // On Hover: Move to center (translate-y-0) and visible
-                         "group-hover:translate-y-0 group-hover:opacity-100"
-                       )}
-                     >
-                       <IconComponent className="w-4 h-4 text-blue-200 drop-shadow-[0_0_8px_rgba(147,197,253,0.8)]" />
-                     </div>
-                  </RippleButton>
-                </Link>
-              );
-            })}
+                        {/* 2. Icon: Hidden below by default, slides up on hover */}
+                        <IconComponent className="w-5 h-5 absolute top-1/2 left-1/2 -translate-x-1/2 translate-y-[150%] transition-transform duration-300 group-hover:-translate-y-1/2 text-white" />
+                        
+                      </MenubarTrigger>
+                    </Link>
+                  </MenubarMenu>
+                );
+              })}
+            </Menubar>
           </div>
 
           {/* RIGHT: Dashboard, Profile & Mobile Toggle */}
@@ -765,7 +757,7 @@ const Navbar = () => {
                       variant="ghost"
                       className={cn(
                         "w-full justify-start pl-4 text-gray-300 hover:text-white hover:bg-white/5 rounded-xl h-12",
-                        isActive && "bg-blue-500/15 text-blue-300"
+                        isActive && "bg-white/10 text-white"
                       )}
                     >
                       <IconComponent className="w-5 h-5 mr-3" />
@@ -778,7 +770,7 @@ const Navbar = () => {
               <div className="h-px bg-white/10 my-2" />
               
               <Link to="/dashboard" onClick={() => setIsOpen(false)}>
-                <Button variant="outline" className="w-full border-blue-500/30 hover:bg-blue-500/10 text-blue-300 h-12 rounded-xl">
+                <Button variant="outline" className="w-full border-primary/20 hover:bg-primary/10 text-primary h-12 rounded-xl">
                   Go to Dashboard
                 </Button>
               </Link>
@@ -882,10 +874,10 @@ const UniverseButtonWrapper = styled.div`
     position: relative;
     cursor: pointer;
     border: none;
-    display: flex;
+    display: flex; /* Changed from table to flex */
     align-items: center;
     justify-content: center;
-    border-radius: 9999px;
+    border-radius: 9999px; /* Pill shape */
     padding: 0;
     margin: 0;
     text-align: center;
@@ -923,7 +915,7 @@ const UniverseButtonWrapper = styled.div`
     overflow: hidden;
     border-radius: 9999px;
     min-width: 120px;
-    padding: 10px 0;
+    padding: 10px 0; /* Increased padding slightly */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -937,7 +929,7 @@ const UniverseButtonWrapper = styled.div`
 
   .uiverse:hover {
     --duration: 1400ms;
-    box-shadow: 0 0 20px var(--c-shadow);
+    box-shadow: 0 0 20px var(--c-shadow); /* Enhanced hover glow */
     transform: translateY(-1px);
   }
 
@@ -954,49 +946,165 @@ const UniverseButtonWrapper = styled.div`
     animation: var(--animation, none) var(--duration) var(--easing) infinite;
   }
 
-  /* ... (Rest of circle animations remain unchanged) ... */
   .uiverse .wrapper .circle.circle-1,
   .uiverse .wrapper .circle.circle-9,
-  .uiverse .wrapper .circle.circle-10 { --background: var(--c-color-4); }
+  .uiverse .wrapper .circle.circle-10 {
+    --background: var(--c-color-4);
+  }
+
   .uiverse .wrapper .circle.circle-3,
-  .uiverse .wrapper .circle.circle-4 { --background: var(--c-color-2); --blur: 14px; }
+  .uiverse .wrapper .circle.circle-4 {
+    --background: var(--c-color-2);
+    --blur: 14px;
+  }
+
   .uiverse .wrapper .circle.circle-5,
-  .uiverse .wrapper .circle.circle-6 { --background: var(--c-color-3); --blur: 16px; }
+  .uiverse .wrapper .circle.circle-6 {
+    --background: var(--c-color-3);
+    --blur: 16px;
+  }
+
   .uiverse .wrapper .circle.circle-2,
   .uiverse .wrapper .circle.circle-7,
   .uiverse .wrapper .circle.circle-8,
   .uiverse .wrapper .circle.circle-11,
-  .uiverse .wrapper .circle.circle-12 { --background: var(--c-color-1); --blur: 12px; }
-  
-  .uiverse .wrapper .circle.circle-1 { --x: 0; --y: -40px; --animation: circle-1; }
-  .uiverse .wrapper .circle.circle-2 { --x: 92px; --y: 8px; --animation: circle-2; }
-  .uiverse .wrapper .circle.circle-3 { --x: -12px; --y: -12px; --animation: circle-3; }
-  .uiverse .wrapper .circle.circle-4 { --x: 80px; --y: -12px; --animation: circle-4; }
-  .uiverse .wrapper .circle.circle-5 { --x: 12px; --y: -4px; --animation: circle-5; }
-  .uiverse .wrapper .circle.circle-6 { --x: 56px; --y: 16px; --animation: circle-6; }
-  .uiverse .wrapper .circle.circle-7 { --x: 8px; --y: 28px; --animation: circle-7; }
-  .uiverse .wrapper .circle.circle-8 { --x: 28px; --y: -4px; --animation: circle-8; }
-  .uiverse .wrapper .circle.circle-9 { --x: 20px; --y: -12px; --animation: circle-9; }
-  .uiverse .wrapper .circle.circle-10 { --x: 64px; --y: 16px; --animation: circle-10; }
-  .uiverse .wrapper .circle.circle-11 { --x: 4px; --y: 4px; --animation: circle-11; }
-  .uiverse .wrapper .circle.circle-12 { --blur: 14px; --x: 52px; --y: 4px; --animation: circle-12; }
+  .uiverse .wrapper .circle.circle-12 {
+    --background: var(--c-color-1);
+    --blur: 12px;
+  }
 
-  @keyframes circle-1 { 33% { transform: translate(0px, 16px) translateZ(0); } 66% { transform: translate(12px, 64px) translateZ(0); } }
-  @keyframes circle-2 { 33% { transform: translate(80px, -10px) translateZ(0); } 66% { transform: translate(72px, -48px) translateZ(0); } }
-  @keyframes circle-3 { 33% { transform: translate(20px, 12px) translateZ(0); } 66% { transform: translate(12px, 4px) translateZ(0); } }
-  @keyframes circle-4 { 33% { transform: translate(76px, -12px) translateZ(0); } 66% { transform: translate(112px, -8px) translateZ(0); } }
-  @keyframes circle-5 { 33% { transform: translate(84px, 28px) translateZ(0); } 66% { transform: translate(40px, -32px) translateZ(0); } }
-  @keyframes circle-6 { 33% { transform: translate(28px, -16px) translateZ(0); } 66% { transform: translate(76px, -56px) translateZ(0); } }
-  @keyframes circle-7 { 33% { transform: translate(8px, 28px) translateZ(0); } 66% { transform: translate(20px, -60px) translateZ(0); } }
-  @keyframes circle-8 { 33% { transform: translate(32px, -4px) translateZ(0); } 66% { transform: translate(56px, -20px) translateZ(0); } }
-  @keyframes circle-9 { 33% { transform: translate(20px, -12px) translateZ(0); } 66% { transform: translate(80px, -8px) translateZ(0); } }
-  @keyframes circle-10 { 33% { transform: translate(68px, 20px) translateZ(0); } 66% { transform: translate(100px, 28px) translateZ(0); } }
-  @keyframes circle-11 { 33% { transform: translate(4px, 4px) translateZ(0); } 66% { transform: translate(68px, 20px) translateZ(0); } }
-  @keyframes circle-12 { 33% { transform: translate(56px, 0px) translateZ(0); } 66% { transform: translate(60px, -32px) translateZ(0); } }
+  .uiverse .wrapper .circle.circle-1 {
+    --x: 0;
+    --y: -40px;
+    --animation: circle-1;
+  }
+
+  .uiverse .wrapper .circle.circle-2 {
+    --x: 92px;
+    --y: 8px;
+    --animation: circle-2;
+  }
+
+  .uiverse .wrapper .circle.circle-3 {
+    --x: -12px;
+    --y: -12px;
+    --animation: circle-3;
+  }
+
+  .uiverse .wrapper .circle.circle-4 {
+    --x: 80px;
+    --y: -12px;
+    --animation: circle-4;
+  }
+
+  .uiverse .wrapper .circle.circle-5 {
+    --x: 12px;
+    --y: -4px;
+    --animation: circle-5;
+  }
+
+  .uiverse .wrapper .circle.circle-6 {
+    --x: 56px;
+    --y: 16px;
+    --animation: circle-6;
+  }
+
+  .uiverse .wrapper .circle.circle-7 {
+    --x: 8px;
+    --y: 28px;
+    --animation: circle-7;
+  }
+
+  .uiverse .wrapper .circle.circle-8 {
+    --x: 28px;
+    --y: -4px;
+    --animation: circle-8;
+  }
+
+  .uiverse .wrapper .circle.circle-9 {
+    --x: 20px;
+    --y: -12px;
+    --animation: circle-9;
+  }
+
+  .uiverse .wrapper .circle.circle-10 {
+    --x: 64px;
+    --y: 16px;
+    --animation: circle-10;
+  }
+
+  .uiverse .wrapper .circle.circle-11 {
+    --x: 4px;
+    --y: 4px;
+    --animation: circle-11;
+  }
+
+  .uiverse .wrapper .circle.circle-12 {
+    --blur: 14px;
+    --x: 52px;
+    --y: 4px;
+    --animation: circle-12;
+  }
+
+  @keyframes circle-1 {
+    33% { transform: translate(0px, 16px) translateZ(0); }
+    66% { transform: translate(12px, 64px) translateZ(0); }
+  }
+
+  @keyframes circle-2 {
+    33% { transform: translate(80px, -10px) translateZ(0); }
+    66% { transform: translate(72px, -48px) translateZ(0); }
+  }
+
+  @keyframes circle-3 {
+    33% { transform: translate(20px, 12px) translateZ(0); }
+    66% { transform: translate(12px, 4px) translateZ(0); }
+  }
+
+  @keyframes circle-4 {
+    33% { transform: translate(76px, -12px) translateZ(0); }
+    66% { transform: translate(112px, -8px) translateZ(0); }
+  }
+
+  @keyframes circle-5 {
+    33% { transform: translate(84px, 28px) translateZ(0); }
+    66% { transform: translate(40px, -32px) translateZ(0); }
+  }
+
+  @keyframes circle-6 {
+    33% { transform: translate(28px, -16px) translateZ(0); }
+    66% { transform: translate(76px, -56px) translateZ(0); }
+  }
+
+  @keyframes circle-7 {
+    33% { transform: translate(8px, 28px) translateZ(0); }
+    66% { transform: translate(20px, -60px) translateZ(0); }
+  }
+
+  @keyframes circle-8 {
+    33% { transform: translate(32px, -4px) translateZ(0); }
+    66% { transform: translate(56px, -20px) translateZ(0); }
+  }
+
+  @keyframes circle-9 {
+    33% { transform: translate(20px, -12px) translateZ(0); }
+    66% { transform: translate(80px, -8px) translateZ(0); }
+  }
+
+  @keyframes circle-10 {
+    33% { transform: translate(68px, 20px) translateZ(0); }
+    66% { transform: translate(100px, 28px) translateZ(0); }
+  }
+
+  @keyframes circle-11 {
+    33% { transform: translate(4px, 4px) translateZ(0); }
+    66% { transform: translate(68px, 20px) translateZ(0); }
+  }
+
+  @keyframes circle-12 {
+    33% { transform: translate(56px, 0px) translateZ(0); }
+    66% { transform: translate(60px, -32px) translateZ(0); }
+  }
 `;
 
 export default Navbar;
-
-
-
-
