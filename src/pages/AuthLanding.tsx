@@ -1239,7 +1239,271 @@
 
 
 
-import { useState, useEffect, useLayoutEffect } from "react";
+// import { useState, useEffect, useLayoutEffect } from "react";
+// import { Button } from "@/components/ui/button";
+// import { useNavigate } from "react-router-dom";
+// import { Input } from "@/components/ui/input";
+// import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+// import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+// import { toast } from "sonner";
+// import { motion } from "framer-motion";
+// import { ContainerScroll } from "@/components/ui/container-scroll-animation";
+
+// const AuthLanding = () => {
+//     const navigate = useNavigate();
+//     const [isExiting, setIsExiting] = useState(false);
+//     const [isLoading, setIsLoading] = useState(false);
+//     const [screenState, setScreenState] = useState<'locked' | 'unlocked'>('locked');
+//     const [activeTab, setActiveTab] = useState("login");
+
+//     // ✅ 1. Force top scroll on mount
+//     useLayoutEffect(() => {
+//         window.scrollTo(0, 0);
+//     }, []);
+
+//     // ✅ 2. Manage Scroll Restoration
+//     useEffect(() => {
+//         if ('scrollRestoration' in history) {
+//             history.scrollRestoration = 'manual';
+//         }
+
+//         const timer = setTimeout(() => {
+//             window.scrollTo(0, 0);
+//         }, 10);
+
+//         return () => {
+//             if ('scrollRestoration' in history) {
+//                 history.scrollRestoration = 'auto';
+//             }
+//             clearTimeout(timer);
+//         };
+//     }, []);
+
+//     const triggerEntrySequence = () => {
+//         window.scrollTo({
+//             top: window.innerHeight * 1.2,
+//             behavior: "smooth"
+//         });
+
+//         setTimeout(() => {
+//             setScreenState('unlocked');
+//         }, 600);
+
+//         setTimeout(() => {
+//             setIsExiting(true);
+//         }, 1300);
+
+//         setTimeout(() => {
+//             window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+//             navigate("/home");
+//         }, 3600);
+//     };
+
+//     const handleGuestLogin = () => {
+//         setIsLoading(true);
+//         setTimeout(() => {
+//             triggerEntrySequence();
+//         }, 800);
+//     };
+
+//     const handleSubmit = async (e: React.FormEvent) => {
+//         e.preventDefault();
+//         setIsLoading(true);
+//         await new Promise(resolve => setTimeout(resolve, 1500));
+//         toast.success("Identity Verified", { description: "Accessing Secure Vault..." });
+//         triggerEntrySequence();
+//     };
+
+//     return (
+//         <div className="relative bg-[#030303] flex flex-col items-center justify-center font-sans selection:bg-[#00f0ff]/30 overflow-x-hidden min-h-screen">
+
+//             {/* Cinematic Background */}
+//                 <div className="fixed inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(30,30,40,1)_0%,rgba(3,3,3,1)_100%)] pointer-events-none" />
+//                 <div className="fixed inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" />
+
+//             {/* Ambient Glows */}
+//             <div className="fixed top-[-10%] left-[-10%] w-[40vw] h-[40vw] rounded-full bg-indigo-600/10 blur-[100px] pointer-events-none mix-blend-screen" />
+//             <div className="fixed bottom-[-10%] right-[-10%] w-[40vw] h-[40vw] rounded-full bg-cyan-600/10 blur-[100px] pointer-events-none mix-blend-screen" />
+
+//             <motion.div
+//                 className="w-full relative z-10"
+//                 initial={{ y: "100%" }}
+//                 animate={isExiting ? { scale: 15, opacity: 0 } : { y: 0, scale: 1, opacity: 1 }}
+//                 transition={{ duration: 2.0, ease: [0.16, 1, 0.3, 1] }}
+//                 style={{ transformOrigin: "center 75%" }}
+//             >
+//                 <ContainerScroll
+//                     titleComponent={
+//                         <div className="flex flex-col items-center justify-center min-h-[70vh] pb-20 pt-10">
+//                             {/* Brand Header */}
+//                             <motion.div
+//                                 initial={{ opacity: 0, y: 20 }}
+//                                 animate={{ opacity: 1, y: 0 }}
+//                                 transition={{ delay: 0.5, duration: 0.8 }}
+//                                 className="mb-16 text-center"
+//                             >
+//                                 <div className="inline-flex items-center gap-3 mb-6 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-md">
+//                                     <div className="relative flex h-2 w-2">
+//                                         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00f0ff] opacity-75"></span>
+//                                         <span className="relative inline-flex rounded-full h-2 w-2 bg-[#00f0ff]"></span>
+//                                     </div>
+//                                     <span className="text-[11px] font-mono text-[#00f0ff] tracking-[0.2em] uppercase">System Operational</span>
+//                                 </div>
+
+//                                 <h1 className="text-5xl md:text-8xl font-bold text-white tracking-tighter mb-4 leading-none select-none">
+//                                     ACADVERSE
+//                                     <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00f0ff] to-[#7000ff] text-2xl md:text-3xl font-serif italic ml-4 align-top">
+//                                         Beta
+//                                     </span>
+//                                 </h1>
+//                                 <p className="text-white/40 text-sm md:text-base font-light tracking-wide max-w-md mx-auto">
+//                                     The ultimate academic intelligence platform.
+//                                 </p>
+//                             </motion.div>
+
+//                             {/* Ultra-Premium Auth Card */}
+//                             <div className="relative w-full max-w-[420px] mx-auto perspective-1000">
+//                                 {/* Prism Glow Effect */}
+//                                 <div className="absolute -inset-[2px] bg-gradient-to-br from-[#00f0ff] via-[#7000ff] to-[#00f0ff] rounded-[24px] opacity-30 blur-xl animate-gradient-xy transition-opacity duration-500 group-hover:opacity-50" />
+
+//                                 <div className="relative bg-[#050505]/90 backdrop-blur-2xl rounded-[22px] border border-white/10 p-1 shadow-2xl ring-1 ring-white/5 overflow-hidden">
+//                                     {/* Inner Noise Texture */}
+//                                     <div className="absolute inset-0 opacity-[0.03] bg-[url('https://grainy-gradients.vercel.app/noise.svg')] mix-blend-overlay pointer-events-none" />
+
+//                                     <div className="relative p-7">
+//                                         {/* Tab Switcher */}
+//                                         <div className="flex p-1 mb-8 bg-black/40 rounded-xl border border-white/5 relative">
+//                                             <div
+//                                                 className="absolute inset-y-1 w-[calc(50%-4px)] bg-[#1a1a1a] rounded-lg shadow-sm transition-all duration-300 ease-out border border-white/5"
+//                                                 style={{ left: activeTab === 'login' ? '4px' : 'calc(50%)' }}
+//                                             />
+//                                             <button
+//                                                 onClick={() => setActiveTab('login')}
+//                                                 className={`flex-1 relative z-10 text-xs font-medium py-2.5 text-center transition-colors duration-300 ${activeTab === 'login' ? 'text-white' : 'text-white/40 hover:text-white/70'}`}
+//                                             >
+//                                                 LOGIN
+//                                             </button>
+//                                             <button
+//                                                 onClick={() => setActiveTab('register')}
+//                                                 className={`flex-1 relative z-10 text-xs font-medium py-2.5 text-center transition-colors duration-300 ${activeTab === 'register' ? 'text-white' : 'text-white/40 hover:text-white/70'}`}
+//                                             >
+//                                                 REGISTER
+//                                             </button>
+//                                         </div>
+
+//                                         <form onSubmit={handleSubmit} className="space-y-5">
+//                                             <div className="space-y-4">
+//                                                 <div className="group relative">
+//                                                     <label className="text-[10px] uppercase tracking-wider text-white/30 font-semibold mb-1.5 block group-focus-within:text-[#00f0ff] transition-colors">Email Address</label>
+//                                                     <div className="relative">
+//                                                         <Input
+//                                                             placeholder="student@pict.edu"
+//                                                             className="h-12 bg-white/[0.03] border-white/[0.08] text-white placeholder:text-white/10 focus:border-[#00f0ff]/50 focus:bg-[#00f0ff]/5 focus:ring-0 transition-all rounded-xl pl-4"
+//                                                         />
+//                                                         <div className="absolute right-3 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)] opacity-0 group-focus-within:opacity-100 transition-opacity" />
+//                                                     </div>
+//                                                 </div>
+
+//                                                 <div className="group relative">
+//                                                     <label className="text-[10px] uppercase tracking-wider text-white/30 font-semibold mb-1.5 block group-focus-within:text-[#00f0ff] transition-colors">Password</label>
+//                                                     <div className="relative">
+//                                                         <Input
+//                                                             type="password"
+//                                                             placeholder="••••••••••••"
+//                                                             className="h-12 bg-white/[0.03] border-white/[0.08] text-white placeholder:text-white/10 focus:border-[#00f0ff]/50 focus:bg-[#00f0ff]/5 focus:ring-0 transition-all rounded-xl pl-4"
+//                                                         />
+//                                                     </div>
+//                                                 </div>
+//                                             </div>
+
+//                                             <Button
+//                                                 disabled={isLoading}
+//                                                 className="w-full h-12 bg-white text-black hover:bg-[#00f0ff] hover:text-black text-sm font-bold tracking-wide rounded-xl transition-all duration-300 shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_30px_rgba(0,240,255,0.4)] relative overflow-hidden group"
+//                                             >
+//                                                 <span className="relative z-10 flex items-center justify-center gap-2">
+//                                                     {isLoading ? (
+//                                                         <>
+//                                                             <span className="w-4 h-4 border-2 border-black/30 border-t-black rounded-full animate-spin" />
+//                                                             VERIFYING...
+//                                                         </>
+//                                                     ) : (
+//                                                         <>
+//                                                             {activeTab === 'login' ? 'INITIALIZE SESSION' : 'REQUEST ACCESS'}
+//                                                         </>
+//                                                     )}
+//                                                 </span>
+//                                             </Button>
+
+//                                             <div className="relative py-2">
+//                                                 <div className="absolute inset-0 flex items-center"><span className="w-full border-t border-white/[0.05]"></span></div>
+//                                                 <div className="relative flex justify-center text-[9px] uppercase tracking-widest"><span className="bg-[#050505] px-3 text-white/20">Or Access via</span></div>
+//                                             </div>
+
+//                                             <Button
+//                                                 type="button"
+//                                                 variant="outline"
+//                                                 onClick={handleGuestLogin}
+//                                                 disabled={isLoading}
+//                                                 className="w-full h-11 border-white/10 bg-white/[0.02] hover:bg-white/[0.05] text-white/60 hover:text-white text-xs font-medium tracking-wider rounded-xl transition-all hover:border-white/20"
+//                                             >
+//                                                 GUEST TERMINAL
+//                                             </Button>
+//                                         </form>
+//                                     </div>
+//                                 </div>
+//                             </div>
+//                         </div>
+//                     }
+//                 >
+//                     <div className="w-full h-full bg-[#050505] relative overflow-hidden flex flex-col">
+//                         {/* MacBook Camera & Bezel */}
+//                         <div className="h-8 bg-black flex items-center justify-center border-b border-white/5 relative z-20">
+//                             <div className="w-20 h-4 bg-neutral-900 rounded-b-xl flex items-center justify-center">
+//                                 <div className="w-1.5 h-1.5 rounded-full bg-blue-900/50 ring-1 ring-white/10" />
+//                             </div>
+//                         </div>
+
+//                         {/* Screen Content */}
+//                         <div className="flex-1 relative flex items-center justify-center bg-[#0a0a0a] overflow-hidden">
+
+                            
+//                             <div className="absolute inset-0 flex items-center justify-center z-20">
+//                                 {screenState === 'unlocked' && (
+//                                     <motion.div
+//                                         initial={{ scale: 0.5, opacity: 0 }}
+//                                         animate={{ scale: 1, opacity: 1 }}
+//                                         className="text-center"
+//                                     >
+//                                         <motion.div
+//                                             initial={{ scale: 0 }}
+//                                             animate={{ scale: 1 }}
+//                                             className="w-20 h-20 bg-emerald-500/10 rounded-full border border-emerald-500/20 flex items-center justify-center mx-auto mb-6"
+//                                         >
+//                                             <div className="w-8 h-8 text-emerald-500">
+//                                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+//                                             </div>
+//                                         </motion.div>
+//                                         <div className="text-3xl font-bold text-white tracking-tight">Access Granted</div>
+//                                         <div className="text-emerald-400 font-mono text-sm mt-2">Redirecting to Vault...</div>
+//                                     </motion.div>
+//                                 )}
+//                             </div>
+
+//                             {/* Grid Overlay */}
+//                             <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:32px_32px] pointer-events-none" />
+//                         </div>
+//                     </div>
+//                 </ContainerScroll>
+//             </motion.div>
+//         </div>
+//     );
+// };
+
+// export default AuthLanding;
+
+
+
+import { useState, useLayoutEffect, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { Input } from "@/components/ui/input";
@@ -1248,6 +1512,8 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { toast } from "sonner";
 import { motion } from "framer-motion";
 import { ContainerScroll } from "@/components/ui/container-scroll-animation";
+import { GoogleLogin } from "@react-oauth/google";
+import axios from "axios";
 
 const AuthLanding = () => {
     const navigate = useNavigate();
@@ -1255,6 +1521,14 @@ const AuthLanding = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [screenState, setScreenState] = useState<'locked' | 'unlocked'>('locked');
     const [activeTab, setActiveTab] = useState("login");
+
+    // Form State
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [name, setName] = useState("");
+
+    // API Base URL
+    const API_URL = "http://localhost:5000/api/auth";
 
     // ✅ 1. Force top scroll on mount
     useLayoutEffect(() => {
@@ -1299,27 +1573,62 @@ const AuthLanding = () => {
         }, 3600);
     };
 
-    const handleGuestLogin = () => {
-        setIsLoading(true);
-        setTimeout(() => {
-            triggerEntrySequence();
-        }, 800);
-    };
-
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleAuthAction = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsLoading(true);
-        await new Promise(resolve => setTimeout(resolve, 1500));
-        toast.success("Identity Verified", { description: "Accessing Secure Vault..." });
-        triggerEntrySequence();
+
+        try {
+            let res;
+            if (activeTab === "login") {
+                // LOGIN
+                res = await axios.post(`${API_URL}/login`, { email, password });
+            } else {
+                // REGISTER
+                res = await axios.post(`${API_URL}/register`, { name, email, password });
+            }
+
+            // Success
+            const { token, user } = res.data;
+            localStorage.setItem("token", token);
+            localStorage.setItem("user", JSON.stringify(user));
+
+            toast.success("Identity Verified", { description: "Accessing Secure Vault..." });
+            triggerEntrySequence();
+
+        } catch (error: any) {
+            console.error("Auth Error:", error);
+            const errMsg = error.response?.data?.error || "Authentication failed";
+            toast.error("Access Denied", { description: errMsg });
+            setIsLoading(false);
+        }
+    };
+
+    const handleGoogleSuccess = async (credentialResponse: any) => {
+        setIsLoading(true);
+        try {
+            const res = await axios.post(`${API_URL}/google`, {
+                token: credentialResponse.credential
+            });
+
+            const { token, user } = res.data;
+            localStorage.setItem("token", token);
+            localStorage.setItem("user", JSON.stringify(user));
+
+            toast.success("Google Identity Verified", { description: "Redirecting..." });
+            triggerEntrySequence();
+        } catch (error: any) {
+            console.error("Google Auth Error:", error);
+            toast.error("Google Auth Failed", { description: "Could not verify identity." });
+            setIsLoading(false);
+        }
     };
 
     return (
         <div className="relative bg-[#030303] flex flex-col items-center justify-center font-sans selection:bg-[#00f0ff]/30 overflow-x-hidden min-h-screen">
 
             {/* Cinematic Background */}
-                <div className="fixed inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(30,30,40,1)_0%,rgba(3,3,3,1)_100%)] pointer-events-none" />
-                <div className="fixed inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" />
+            <div className="fixed inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(30,30,40,1)_0%,rgba(3,3,3,1)_100%)] pointer-events-none" />
+            <div className="fixed inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" />
 
             {/* Ambient Glows */}
             <div className="fixed top-[-10%] left-[-10%] w-[40vw] h-[40vw] rounded-full bg-indigo-600/10 blur-[100px] pointer-events-none mix-blend-screen" />
@@ -1337,118 +1646,155 @@ const AuthLanding = () => {
                         <div className="flex flex-col items-center justify-center min-h-[70vh] pb-20 pt-10">
                             {/* Brand Header */}
                             <motion.div
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: 0.5, duration: 0.8 }}
-                                className="mb-16 text-center"
+                                initial={{ opacity: 0, scale: 0.95 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                transition={{ delay: 0.5, duration: 1.0, ease: [0.22, 1, 0.36, 1] }}
+                                className="mb-14 text-center relative z-20"
                             >
-                                <div className="inline-flex items-center gap-3 mb-6 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-md">
-                                    <div className="relative flex h-2 w-2">
-                                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00f0ff] opacity-75"></span>
-                                        <span className="relative inline-flex rounded-full h-2 w-2 bg-[#00f0ff]"></span>
-                                    </div>
-                                    <span className="text-[11px] font-mono text-[#00f0ff] tracking-[0.2em] uppercase">System Operational</span>
-                                </div>
-
-                                <h1 className="text-5xl md:text-8xl font-bold text-white tracking-tighter mb-4 leading-none select-none">
-                                    ACADVERSE
-                                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00f0ff] to-[#7000ff] text-2xl md:text-3xl font-serif italic ml-4 align-top">
-                                        Beta
-                                    </span>
+                                <h1 className="text-5xl md:text-7xl font-bold tracking-tighter mb-4 text-white drop-shadow-2xl">
+                                    ACAD<span className="text-transparent bg-clip-text bg-gradient-to-tr from-indigo-300 via-white to-indigo-300">VERSE</span>
                                 </h1>
-                                <p className="text-white/40 text-sm md:text-base font-light tracking-wide max-w-md mx-auto">
-                                    The ultimate academic intelligence platform.
+                                <p className="text-indigo-200/60 text-xs md:text-sm font-medium tracking-[0.2em] uppercase mix-blend-plus-lighter">
+                                    Next Gen Intelligence Vault
                                 </p>
                             </motion.div>
 
                             {/* Ultra-Premium Auth Card */}
-                            <div className="relative w-full max-w-[420px] mx-auto perspective-1000">
-                                {/* Prism Glow Effect */}
-                                <div className="absolute -inset-[2px] bg-gradient-to-br from-[#00f0ff] via-[#7000ff] to-[#00f0ff] rounded-[24px] opacity-30 blur-xl animate-gradient-xy transition-opacity duration-500 group-hover:opacity-50" />
+                            <div className="relative w-full max-w-[360px] mx-auto perspective-1000 group">
 
-                                <div className="relative bg-[#050505]/90 backdrop-blur-2xl rounded-[22px] border border-white/10 p-1 shadow-2xl ring-1 ring-white/5 overflow-hidden">
-                                    {/* Inner Noise Texture */}
-                                    <div className="absolute inset-0 opacity-[0.03] bg-[url('https://grainy-gradients.vercel.app/noise.svg')] mix-blend-overlay pointer-events-none" />
+                                {/* Ambient Backlight - Dynamic */}
+                                <div className="absolute -inset-0.5 bg-gradient-to-r from-indigo-500/30 via-purple-500/30 to-blue-500/30 rounded-[24px] blur-2xl opacity-40 group-hover:opacity-60 transition-opacity duration-700" />
 
-                                    <div className="relative p-7">
-                                        {/* Tab Switcher */}
-                                        <div className="flex p-1 mb-8 bg-black/40 rounded-xl border border-white/5 relative">
-                                            <div
-                                                className="absolute inset-y-1 w-[calc(50%-4px)] bg-[#1a1a1a] rounded-lg shadow-sm transition-all duration-300 ease-out border border-white/5"
-                                                style={{ left: activeTab === 'login' ? '4px' : 'calc(50%)' }}
-                                            />
+                                {/* The Glass Slab */}
+                                <div className="relative bg-[#050505]/80 backdrop-blur-2xl rounded-[22px] border border-white/[0.08] shadow-[0_0_40px_-10px_rgba(0,0,0,0.7)] overflow-hidden ring-1 ring-white/[0.05]">
+
+                                    {/* Subtle Gradient Overlay */}
+                                    <div className="absolute inset-0 bg-gradient-to-b from-white/[0.03] to-transparent pointer-events-none" />
+
+                                    <div className="relative p-6 px-8">
+                                        {/* Fluid Tab Switcher */}
+                                        <div className="relative flex w-full mb-8 bg-black/40 p-1 rounded-xl border border-white/[0.05]">
                                             <button
                                                 onClick={() => setActiveTab('login')}
-                                                className={`flex-1 relative z-10 text-xs font-medium py-2.5 text-center transition-colors duration-300 ${activeTab === 'login' ? 'text-white' : 'text-white/40 hover:text-white/70'}`}
+                                                className={`relative flex-1 py-2.5 text-xs font-semibold rounded-lg transition-colors duration-200 z-10 ${activeTab === 'login' ? 'text-white' : 'text-neutral-500 hover:text-neutral-300'}`}
                                             >
-                                                LOGIN
+                                                {activeTab === 'login' && (
+                                                    <motion.div
+                                                        layoutId="tab-pill"
+                                                        className="absolute inset-0 bg-white/[0.1] rounded-lg border border-white/[0.05] shadow-sm"
+                                                        transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                                                    />
+                                                )}
+                                                <span className="relative">Login</span>
                                             </button>
                                             <button
                                                 onClick={() => setActiveTab('register')}
-                                                className={`flex-1 relative z-10 text-xs font-medium py-2.5 text-center transition-colors duration-300 ${activeTab === 'register' ? 'text-white' : 'text-white/40 hover:text-white/70'}`}
+                                                className={`relative flex-1 py-2.5 text-xs font-semibold rounded-lg transition-colors duration-200 z-10 ${activeTab === 'register' ? 'text-white' : 'text-neutral-500 hover:text-neutral-300'}`}
                                             >
-                                                REGISTER
+                                                {activeTab === 'register' && (
+                                                    <motion.div
+                                                        layoutId="tab-pill"
+                                                        className="absolute inset-0 bg-white/[0.1] rounded-lg border border-white/[0.05] shadow-sm"
+                                                        transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                                                    />
+                                                )}
+                                                <span className="relative">Sign Up</span>
                                             </button>
                                         </div>
 
-                                        <form onSubmit={handleSubmit} className="space-y-5">
+                                        <form onSubmit={handleAuthAction} className="space-y-5">
                                             <div className="space-y-4">
-                                                <div className="group relative">
-                                                    <label className="text-[10px] uppercase tracking-wider text-white/30 font-semibold mb-1.5 block group-focus-within:text-[#00f0ff] transition-colors">Email Address</label>
-                                                    <div className="relative">
+                                                {activeTab === 'register' && (
+                                                    <motion.div
+                                                        initial={{ height: 0, opacity: 0 }}
+                                                        animate={{ height: "auto", opacity: 1 }}
+                                                        exit={{ height: 0, opacity: 0 }}
+                                                        className="space-y-1 overflow-hidden"
+                                                    >
                                                         <Input
-                                                            placeholder="student@pict.edu"
-                                                            className="h-12 bg-white/[0.03] border-white/[0.08] text-white placeholder:text-white/10 focus:border-[#00f0ff]/50 focus:bg-[#00f0ff]/5 focus:ring-0 transition-all rounded-xl pl-4"
+                                                            value={name}
+                                                            onChange={(e) => setName(e.target.value)}
+                                                            placeholder="Full Name"
+                                                            className="h-11 bg-white/[0.03] border border-white/[0.06] focus:border-indigo-500/50 text-white placeholder:text-neutral-600 rounded-xl px-4 transition-all duration-300 text-sm focus:bg-white/[0.06] focus:ring-4 focus:ring-indigo-500/10 focus-visible:ring-0"
+                                                            required
                                                         />
-                                                        <div className="absolute right-3 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)] opacity-0 group-focus-within:opacity-100 transition-opacity" />
-                                                    </div>
+                                                    </motion.div>
+                                                )}
+
+                                                <div className="space-y-1">
+                                                    <Input
+                                                        value={email}
+                                                        onChange={(e) => setEmail(e.target.value)}
+                                                        placeholder="Email Address"
+                                                        type="email"
+                                                        className="h-11 bg-white/[0.03] border border-white/[0.06] focus:border-indigo-500/50 text-white placeholder:text-neutral-600 rounded-xl px-4 transition-all duration-300 text-sm focus:bg-white/[0.06] focus:ring-4 focus:ring-indigo-500/10 focus-visible:ring-0"
+                                                        required
+                                                    />
                                                 </div>
 
-                                                <div className="group relative">
-                                                    <label className="text-[10px] uppercase tracking-wider text-white/30 font-semibold mb-1.5 block group-focus-within:text-[#00f0ff] transition-colors">Password</label>
-                                                    <div className="relative">
-                                                        <Input
-                                                            type="password"
-                                                            placeholder="••••••••••••"
-                                                            className="h-12 bg-white/[0.03] border-white/[0.08] text-white placeholder:text-white/10 focus:border-[#00f0ff]/50 focus:bg-[#00f0ff]/5 focus:ring-0 transition-all rounded-xl pl-4"
-                                                        />
-                                                    </div>
+                                                <div className="space-y-1">
+                                                    <Input
+                                                        value={password}
+                                                        onChange={(e) => setPassword(e.target.value)}
+                                                        type="password"
+                                                        placeholder="Password"
+                                                        className="h-11 bg-white/[0.03] border border-white/[0.06] focus:border-indigo-500/50 text-white placeholder:text-neutral-600 rounded-xl px-4 transition-all duration-300 text-sm focus:bg-white/[0.06] focus:ring-4 focus:ring-indigo-500/10 focus-visible:ring-0"
+                                                        required
+                                                    />
                                                 </div>
                                             </div>
 
                                             <Button
                                                 disabled={isLoading}
-                                                className="w-full h-12 bg-white text-black hover:bg-[#00f0ff] hover:text-black text-sm font-bold tracking-wide rounded-xl transition-all duration-300 shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_30px_rgba(0,240,255,0.4)] relative overflow-hidden group"
+                                                className="w-full h-12 bg-white text-black hover:bg-neutral-100 text-sm font-bold tracking-tight rounded-xl transition-all duration-300 shadow-[0_0_20px_-5px_rgba(255,255,255,0.3)] hover:shadow-[0_0_25px_-5px_rgba(255,255,255,0.5)] hover:scale-[1.02] active:scale-[0.98] mt-2 relative overflow-hidden"
                                             >
-                                                <span className="relative z-10 flex items-center justify-center gap-2">
-                                                    {isLoading ? (
-                                                        <>
-                                                            <span className="w-4 h-4 border-2 border-black/30 border-t-black rounded-full animate-spin" />
-                                                            VERIFYING...
-                                                        </>
-                                                    ) : (
-                                                        <>
-                                                            {activeTab === 'login' ? 'INITIALIZE SESSION' : 'REQUEST ACCESS'}
-                                                        </>
-                                                    )}
-                                                </span>
+                                                {isLoading ? (
+                                                    <span className="w-4 h-4 border-2 border-black/30 border-t-black rounded-full animate-spin" />
+                                                ) : (
+                                                    activeTab === 'login' ? 'Enter Vault' : 'Create Account'
+                                                )}
                                             </Button>
 
-                                            <div className="relative py-2">
-                                                <div className="absolute inset-0 flex items-center"><span className="w-full border-t border-white/[0.05]"></span></div>
-                                                <div className="relative flex justify-center text-[9px] uppercase tracking-widest"><span className="bg-[#050505] px-3 text-white/20">Or Access via</span></div>
+                                            <div className="relative py-4">
+                                                <div className="absolute inset-0 flex items-center"><span className="w-full border-t border-white/[0.08]"></span></div>
+                                                <div className="relative flex justify-center text-[10px]"><span className="bg-[#050505] px-3 text-neutral-600 uppercase tracking-widest font-semibold">Or</span></div>
                                             </div>
 
-                                            <Button
-                                                type="button"
-                                                variant="outline"
-                                                onClick={handleGuestLogin}
-                                                disabled={isLoading}
-                                                className="w-full h-11 border-white/10 bg-white/[0.02] hover:bg-white/[0.05] text-white/60 hover:text-white text-xs font-medium tracking-wider rounded-xl transition-all hover:border-white/20"
-                                            >
-                                                GUEST TERMINAL
-                                            </Button>
+                                            <div className="flex justify-center w-full">
+                                                <div className="w-full hover:scale-[1.01] transition-transform duration-300">
+                                                    <GoogleLogin
+                                                        onSuccess={handleGoogleSuccess}
+                                                        onError={() => {
+                                                            toast.error("Google Auth Failed");
+                                                            console.log('Login Failed');
+                                                        }}
+                                                        theme="filled_blue"
+                                                        shape="rectangular"
+                                                        size="large"
+                                                        width="100%"
+                                                    />
+                                                </div>
+                                            </div>
                                         </form>
+
+                                        {/* Footer Links */}
+                                        <div className="mt-8 text-center">
+                                            {activeTab === 'login' ? (
+                                                <p className="text-[11px] text-neutral-500">
+                                                    New to AcadVerse?{' '}
+                                                    <button onClick={() => setActiveTab('register')} className="text-white hover:underline decoration-white/30 underline-offset-4 transition-all">
+                                                        Initialize ID
+                                                    </button>
+                                                </p>
+                                            ) : (
+                                                <p className="text-[11px] text-neutral-500">
+                                                    Already have an ID?{' '}
+                                                    <button onClick={() => setActiveTab('login')} className="text-white hover:underline decoration-white/30 underline-offset-4 transition-all">
+                                                        Access Vault
+                                                    </button>
+                                                </p>
+                                            )}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -1465,16 +1811,6 @@ const AuthLanding = () => {
 
                         {/* Screen Content */}
                         <div className="flex-1 relative flex items-center justify-center bg-[#0a0a0a] overflow-hidden">
-
-                            {/* Dashboard Image / Mockup - ALWAYS VISIBLE */}
-                            {/* <div
-                                className="absolute inset-0 bg-cover bg-center transition-all duration-700"
-                                style={{
-                                    backgroundImage: 'url("https://images.unsplash.com/photo-1614064641938-3bbee52942c7?q=80&w=2070&auto=format&fit=crop")'
-                                }}
-                            >
-                                <div className="absolute inset-0 bg-black/10" />
-                            </div> */}
 
                             {/* Access Granted Overlay - Only on Unlock */}
                             <div className="absolute inset-0 flex items-center justify-center z-20">
