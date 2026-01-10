@@ -13,7 +13,7 @@
 
 // // // Modified FeatureCard to include the exact glow effect from the Login Card
 // // const FeatureCard = ({ icon, title, description, color }: { icon: JSX.Element, title: string, description: string, color: string }) => {
-    
+
 // //     // Map for internal Icon background colors
 // //     const iconColorClasses: Record<string, string> = {
 // //         primary: 'bg-primary/10 text-primary',
@@ -28,7 +28,7 @@
 // //         <div className="relative group hover:-translate-y-1 transition-all duration-300">
 // //             {/* Glow Effect Layer - Matches Login Card Exactly */}
 // //             <div className="absolute -inset-0.5 bg-gradient-to-r from-primary to-purple-600 rounded-2xl blur opacity-30 dark:opacity-50 transition duration-500 group-hover:opacity-70 group-hover:blur-md"></div>
-            
+
 // //             {/* Main Card Content */}
 // //             <div className="relative h-full p-8 rounded-2xl border border-white/50 dark:border-gray-700 bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl ring-1 ring-black/5 dark:ring-white/10 shadow-lg hover:shadow-xl transition-all">
 // //                 <div className={`w-16 h-16 rounded-xl ${iconColorClasses[color]} flex items-center justify-center mb-6`}>
@@ -65,7 +65,7 @@
 // //             }
 
 // //             toast.success(isLogin ? 'Login successful! Redirecting to Home.' : 'Registration successful! Please log in.');
-            
+
 // //             if (isLogin) {
 // //                  window.location.href = "/home"; 
 // //             } else {
@@ -100,14 +100,14 @@
 // //                      />
 // //                 </div>
 // //             </div>
-            
+
 // //             <Navbar /> 
-            
+
 // //             <section className="relative pt-16">
 // //                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 relative">
 // //                     <div className="grid md:grid-cols-2 gap-12 items-center">
 // //                         <div className="space-y-8 animate-fade-in">
-                            
+
 // //                             <h1 className="text-5xl lg:text-6xl font-extrabold text-foreground leading-tight drop-shadow-sm">
 // //                                 Your Academic
 // //                                 <span className="block text-primary">Universe</span>
@@ -121,7 +121,7 @@
 // //                         <div className="animate-slide-in relative group">
 // //                             {/* Decorative Glow Layer - Restored */}
 // //                             <div className="absolute -inset-0.5 bg-gradient-to-r from-primary to-purple-600 rounded-2xl blur opacity-30 dark:opacity-50 transition duration-500 group-hover:opacity-70 group-hover:blur-md"></div>
-                            
+
 // //                             <Card className="relative shadow-2xl border-white/50 dark:border-gray-700 bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl ring-1 ring-black/5 dark:ring-white/10">
 // //                                 <CardHeader className="space-y-2 pb-6">
 // //                                     <CardTitle className="text-3xl font-bold tracking-tight text-center">{isLogin ? 'Welcome Back' : 'Join PICT Hub'}</CardTitle>
@@ -568,7 +568,7 @@
 //             // ❗ CRITICAL FIX: Instantly jump to top before route change
 //             // This ensures /home loads at the Hero section, not scrolled down.
 //             window.scrollTo({ top: 0, left: 0, behavior: "auto" }); 
-            
+
 //             navigate("/home");
 //         }, 3600);
 //     };
@@ -1466,7 +1466,7 @@
 //                         {/* Screen Content */}
 //                         <div className="flex-1 relative flex items-center justify-center bg-[#0a0a0a] overflow-hidden">
 
-                            
+
 //                             <div className="absolute inset-0 flex items-center justify-center z-20">
 //                                 {screenState === 'unlocked' && (
 //                                     <motion.div
@@ -1624,177 +1624,152 @@ const AuthLanding = () => {
     };
 
     return (
-        <div className="relative bg-[#030303] flex flex-col items-center justify-center font-sans selection:bg-[#00f0ff]/30 overflow-x-hidden min-h-screen">
+        <div className="relative bg-[#050505] flex flex-col items-center justify-center font-sans selection:bg-indigo-500/30 overflow-x-hidden min-h-screen">
 
-            {/* Cinematic Background */}
-            <div className="fixed inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(30,30,40,1)_0%,rgba(3,3,3,1)_100%)] pointer-events-none" />
-            <div className="fixed inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" />
+            {/* High-End Background - Subtle & Deep */}
+            <div className="fixed inset-0 bg-[radial-gradient(circle_at_50%_0%,#111111_0%,#050505_100%)] pointer-events-none" />
 
-            {/* Ambient Glows */}
-            <div className="fixed top-[-10%] left-[-10%] w-[40vw] h-[40vw] rounded-full bg-indigo-600/10 blur-[100px] pointer-events-none mix-blend-screen" />
-            <div className="fixed bottom-[-10%] right-[-10%] w-[40vw] h-[40vw] rounded-full bg-cyan-600/10 blur-[100px] pointer-events-none mix-blend-screen" />
+            {/* Minimalist Grid - Barely Visible */}
+            <div className="fixed inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:6rem_6rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" />
 
             <motion.div
                 className="w-full relative z-10"
                 initial={{ y: "100%" }}
                 animate={isExiting ? { scale: 15, opacity: 0 } : { y: 0, scale: 1, opacity: 1 }}
-                transition={{ duration: 2.0, ease: [0.16, 1, 0.3, 1] }}
+                transition={{ duration: 1.8, ease: [0.16, 1, 0.3, 1] }}
                 style={{ transformOrigin: "center 75%" }}
             >
                 <ContainerScroll
                     titleComponent={
-                        <div className="flex flex-col items-center justify-center min-h-[70vh] pb-20 pt-10">
-                            {/* Brand Header */}
+                        <div className="flex flex-col items-center justify-center min-h-[70vh] pb-20 pt-16">
+
+                            {/* Brand Header - Refined & Professional */}
                             <motion.div
-                                initial={{ opacity: 0, scale: 0.95 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                transition={{ delay: 0.5, duration: 1.0, ease: [0.22, 1, 0.36, 1] }}
-                                className="mb-14 text-center relative z-20"
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.2, duration: 0.8 }}
+                                className="mb-12 text-center relative z-20"
                             >
-                                <h1 className="text-5xl md:text-7xl font-bold tracking-tighter mb-4 text-white drop-shadow-2xl">
-                                    ACAD<span className="text-transparent bg-clip-text bg-gradient-to-tr from-indigo-300 via-white to-indigo-300">VERSE</span>
+                                <div className="flex items-center justify-center gap-3 mb-4">
+                                    <div className="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse" />
+                                    <span className="text-[10px] uppercase tracking-[0.3em] text-neutral-500 font-medium">System Online</span>
+                                    <div className="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse" />
+                                </div>
+
+                                <h1 className="text-4xl md:text-6xl font-semibold tracking-tight text-white mb-3">
+                                    ACAD<span className="font-light text-neutral-400">VERSE</span>
                                 </h1>
-                                <p className="text-indigo-200/60 text-xs md:text-sm font-medium tracking-[0.2em] uppercase mix-blend-plus-lighter">
-                                    Next Gen Intelligence Vault
+
+                                <p className="text-neutral-500 text-xs md:text-sm tracking-[0.1em] font-medium max-w-md mx-auto leading-relaxed">
+                                    NEXT GEN INTELLIGENCE VAULT
                                 </p>
                             </motion.div>
 
                             {/* Ultra-Premium Auth Card */}
-                            <div className="relative w-full max-w-[360px] mx-auto perspective-1000 group">
+                            <div className="relative w-full max-w-[380px] mx-auto group perspective-1000">
 
-                                {/* Ambient Backlight - Dynamic */}
-                                <div className="absolute -inset-0.5 bg-gradient-to-r from-indigo-500/30 via-purple-500/30 to-blue-500/30 rounded-[24px] blur-2xl opacity-40 group-hover:opacity-60 transition-opacity duration-700" />
+                                {/* Card Container */}
+                                <div className="relative bg-[#0A0A0A] rounded-[20px] border border-white/[0.08] shadow-2xl overflow-hidden ring-1 ring-white/[0.02]">
 
-                                {/* The Glass Slab */}
-                                <div className="relative bg-[#050505]/80 backdrop-blur-2xl rounded-[22px] border border-white/[0.08] shadow-[0_0_40px_-10px_rgba(0,0,0,0.7)] overflow-hidden ring-1 ring-white/[0.05]">
+                                    {/* Subtle Top Highlight */}
+                                    <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-indigo-500/50 to-transparent opacity-50" />
 
-                                    {/* Subtle Gradient Overlay */}
-                                    <div className="absolute inset-0 bg-gradient-to-b from-white/[0.03] to-transparent pointer-events-none" />
-
-                                    <div className="relative p-6 px-8">
-                                        {/* Fluid Tab Switcher */}
-                                        <div className="relative flex w-full mb-8 bg-black/40 p-1 rounded-xl border border-white/[0.05]">
-                                            <button
-                                                onClick={() => setActiveTab('login')}
-                                                className={`relative flex-1 py-2.5 text-xs font-semibold rounded-lg transition-colors duration-200 z-10 ${activeTab === 'login' ? 'text-white' : 'text-neutral-500 hover:text-neutral-300'}`}
-                                            >
-                                                {activeTab === 'login' && (
-                                                    <motion.div
-                                                        layoutId="tab-pill"
-                                                        className="absolute inset-0 bg-white/[0.1] rounded-lg border border-white/[0.05] shadow-sm"
-                                                        transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-                                                    />
-                                                )}
-                                                <span className="relative">Login</span>
-                                            </button>
-                                            <button
-                                                onClick={() => setActiveTab('register')}
-                                                className={`relative flex-1 py-2.5 text-xs font-semibold rounded-lg transition-colors duration-200 z-10 ${activeTab === 'register' ? 'text-white' : 'text-neutral-500 hover:text-neutral-300'}`}
-                                            >
-                                                {activeTab === 'register' && (
-                                                    <motion.div
-                                                        layoutId="tab-pill"
-                                                        className="absolute inset-0 bg-white/[0.1] rounded-lg border border-white/[0.05] shadow-sm"
-                                                        transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-                                                    />
-                                                )}
-                                                <span className="relative">Sign Up</span>
-                                            </button>
+                                    <div className="p-8">
+                                        {/* Tab Switcher - Minimalist */}
+                                        <div className="flex w-full mb-8 border-b border-white/[0.06] pb-1">
+                                            {['login', 'register'].map((tab) => (
+                                                <button
+                                                    key={tab}
+                                                    onClick={() => setActiveTab(tab)}
+                                                    className={`flex-1 pb-3 text-xs font-medium tracking-wide transition-all duration-300 relative ${activeTab === tab ? 'text-white' : 'text-neutral-600 hover:text-neutral-400'
+                                                        }`}
+                                                >
+                                                    {tab === 'login' ? 'LOGIN' : 'REGISTER'}
+                                                    {activeTab === tab && (
+                                                        <motion.div
+                                                            layoutId="activeTabLine"
+                                                            className="absolute bottom-[-1px] left-0 right-0 h-[1px] bg-indigo-500"
+                                                        />
+                                                    )}
+                                                </button>
+                                            ))}
                                         </div>
 
-                                        <form onSubmit={handleAuthAction} className="space-y-5">
+                                        <form onSubmit={handleAuthAction} className="space-y-4">
+                                            {activeTab === 'register' && (
+                                                <motion.div
+                                                    initial={{ height: 0, opacity: 0 }}
+                                                    animate={{ height: "auto", opacity: 1 }}
+                                                    exit={{ height: 0, opacity: 0 }}
+                                                    className="overflow-hidden"
+                                                >
+                                                    <Input
+                                                        value={name}
+                                                        onChange={(e) => setName(e.target.value)}
+                                                        placeholder="Full Name"
+                                                        required
+                                                        className="h-12 bg-neutral-900/50 border-white/[0.05] text-white placeholder:text-neutral-600 rounded-lg text-sm px-4 focus:ring-1 focus:ring-indigo-500/50 focus:border-indigo-500/50 focus:bg-neutral-900 transition-all font-light"
+                                                    />
+                                                </motion.div>
+                                            )}
+
                                             <div className="space-y-4">
-                                                {activeTab === 'register' && (
-                                                    <motion.div
-                                                        initial={{ height: 0, opacity: 0 }}
-                                                        animate={{ height: "auto", opacity: 1 }}
-                                                        exit={{ height: 0, opacity: 0 }}
-                                                        className="space-y-1 overflow-hidden"
-                                                    >
-                                                        <Input
-                                                            value={name}
-                                                            onChange={(e) => setName(e.target.value)}
-                                                            placeholder="Full Name"
-                                                            className="h-11 bg-white/[0.03] border border-white/[0.06] focus:border-indigo-500/50 text-white placeholder:text-neutral-600 rounded-xl px-4 transition-all duration-300 text-sm focus:bg-white/[0.06] focus:ring-4 focus:ring-indigo-500/10 focus-visible:ring-0"
-                                                            required
-                                                        />
-                                                    </motion.div>
-                                                )}
-
-                                                <div className="space-y-1">
-                                                    <Input
-                                                        value={email}
-                                                        onChange={(e) => setEmail(e.target.value)}
-                                                        placeholder="Email Address"
-                                                        type="email"
-                                                        className="h-11 bg-white/[0.03] border border-white/[0.06] focus:border-indigo-500/50 text-white placeholder:text-neutral-600 rounded-xl px-4 transition-all duration-300 text-sm focus:bg-white/[0.06] focus:ring-4 focus:ring-indigo-500/10 focus-visible:ring-0"
-                                                        required
-                                                    />
-                                                </div>
-
-                                                <div className="space-y-1">
-                                                    <Input
-                                                        value={password}
-                                                        onChange={(e) => setPassword(e.target.value)}
-                                                        type="password"
-                                                        placeholder="Password"
-                                                        className="h-11 bg-white/[0.03] border border-white/[0.06] focus:border-indigo-500/50 text-white placeholder:text-neutral-600 rounded-xl px-4 transition-all duration-300 text-sm focus:bg-white/[0.06] focus:ring-4 focus:ring-indigo-500/10 focus-visible:ring-0"
-                                                        required
-                                                    />
-                                                </div>
+                                                <Input
+                                                    value={email}
+                                                    onChange={(e) => setEmail(e.target.value)}
+                                                    placeholder="Email Address"
+                                                    type="email"
+                                                    required
+                                                    className="h-12 bg-neutral-900/50 border-white/[0.05] text-white placeholder:text-neutral-600 rounded-lg text-sm px-4 focus:ring-1 focus:ring-indigo-500/50 focus:border-indigo-500/50 focus:bg-neutral-900 transition-all font-light"
+                                                />
+                                                <Input
+                                                    value={password}
+                                                    onChange={(e) => setPassword(e.target.value)}
+                                                    type="password"
+                                                    placeholder="Password"
+                                                    required
+                                                    className="h-12 bg-neutral-900/50 border-white/[0.05] text-white placeholder:text-neutral-600 rounded-lg text-sm px-4 focus:ring-1 focus:ring-indigo-500/50 focus:border-indigo-500/50 focus:bg-neutral-900 transition-all font-light"
+                                                />
                                             </div>
 
-                                            <Button
-                                                disabled={isLoading}
-                                                className="w-full h-12 bg-white text-black hover:bg-neutral-100 text-sm font-bold tracking-tight rounded-xl transition-all duration-300 shadow-[0_0_20px_-5px_rgba(255,255,255,0.3)] hover:shadow-[0_0_25px_-5px_rgba(255,255,255,0.5)] hover:scale-[1.02] active:scale-[0.98] mt-2 relative overflow-hidden"
-                                            >
-                                                {isLoading ? (
-                                                    <span className="w-4 h-4 border-2 border-black/30 border-t-black rounded-full animate-spin" />
-                                                ) : (
-                                                    activeTab === 'login' ? 'Enter Vault' : 'Create Account'
-                                                )}
-                                            </Button>
+                                            <div className="pt-4 space-y-3">
+                                                <Button
+                                                    disabled={isLoading}
+                                                    className="w-full h-12 bg-white text-black hover:bg-neutral-200 text-xs font-semibold tracking-wide rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl relative overflow-hidden group"
+                                                >
+                                                    {isLoading ? (
+                                                        <span className="w-4 h-4 border-2 border-black/30 border-t-black rounded-full animate-spin" />
+                                                    ) : (
+                                                        activeTab === 'login' ? 'ENTER VAULT' : 'CREATE ACCOUNT'
+                                                    )}
+                                                </Button>
 
-                                            <div className="relative py-4">
-                                                <div className="absolute inset-0 flex items-center"><span className="w-full border-t border-white/[0.08]"></span></div>
-                                                <div className="relative flex justify-center text-[10px]"><span className="bg-[#050505] px-3 text-neutral-600 uppercase tracking-widest font-semibold">Or</span></div>
-                                            </div>
+                                                <div className="flex items-center gap-3 my-4">
+                                                    <div className="h-px bg-white/[0.05] flex-1" />
+                                                    <span className="text-[10px] text-neutral-600 uppercase tracking-wider">Or</span>
+                                                    <div className="h-px bg-white/[0.05] flex-1" />
+                                                </div>
 
-                                            <div className="flex justify-center w-full">
-                                                <div className="w-full hover:scale-[1.01] transition-transform duration-300">
+                                                <div className="w-full flex justify-center grayscale opacity-80 hover:grayscale-0 hover:opacity-100 transition-all duration-500">
                                                     <GoogleLogin
                                                         onSuccess={handleGoogleSuccess}
-                                                        onError={() => {
-                                                            toast.error("Google Auth Failed");
-                                                            console.log('Login Failed');
-                                                        }}
-                                                        theme="filled_blue"
+                                                        onError={() => toast.error("Google Auth Failed")}
+                                                        theme="filled_black"
                                                         shape="rectangular"
                                                         size="large"
                                                         width="100%"
+                                                        text="continue_with"
                                                     />
                                                 </div>
                                             </div>
                                         </form>
+                                    </div>
 
-                                        {/* Footer Links */}
-                                        <div className="mt-8 text-center">
-                                            {activeTab === 'login' ? (
-                                                <p className="text-[11px] text-neutral-500">
-                                                    New to AcadVerse?{' '}
-                                                    <button onClick={() => setActiveTab('register')} className="text-white hover:underline decoration-white/30 underline-offset-4 transition-all">
-                                                        Initialize ID
-                                                    </button>
-                                                </p>
-                                            ) : (
-                                                <p className="text-[11px] text-neutral-500">
-                                                    Already have an ID?{' '}
-                                                    <button onClick={() => setActiveTab('login')} className="text-white hover:underline decoration-white/30 underline-offset-4 transition-all">
-                                                        Access Vault
-                                                    </button>
-                                                </p>
-                                            )}
-                                        </div>
+                                    {/* Footer Info */}
+                                    <div className="px-8 pb-6 text-center">
+                                        <p className="text-[10px] text-neutral-600">
+                                            Everything you need, <span className="text-neutral-500">in one place.</span>
+                                        </p>
                                     </div>
                                 </div>
                             </div>
@@ -1804,9 +1779,7 @@ const AuthLanding = () => {
                     <div className="w-full h-full bg-[#050505] relative overflow-hidden flex flex-col">
                         {/* MacBook Camera & Bezel */}
                         <div className="h-8 bg-black flex items-center justify-center border-b border-white/5 relative z-20">
-                            <div className="w-20 h-4 bg-neutral-900 rounded-b-xl flex items-center justify-center">
-                                <div className="w-1.5 h-1.5 rounded-full bg-blue-900/50 ring-1 ring-white/10" />
-                            </div>
+                            <div className="w-1.5 h-1.5 rounded-full bg-green-500/30 ring-1 ring-white/10" />
                         </div>
 
                         {/* Screen Content */}
