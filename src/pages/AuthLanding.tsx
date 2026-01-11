@@ -1528,7 +1528,8 @@ const AuthLanding = () => {
     const [name, setName] = useState("");
 
     // API Base URL
-    const API_URL = "http://localhost:5000/api/auth";
+    // Uses the Vercel environment variable if available, otherwise falls back to localhost
+const API_URL = (import.meta.env.VITE_API_URL || "http://localhost:5000") + "/api/auth";
 
     // ✅ 1. Force top scroll on mount
     useLayoutEffect(() => {
