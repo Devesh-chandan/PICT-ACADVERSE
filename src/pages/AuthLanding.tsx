@@ -1528,7 +1528,7 @@ const AuthLanding = () => {
     const [name, setName] = useState("");
 
     // API Base URL
-    const API_URL = "http://localhost:5000/api/auth";
+    const API_URL = "/api/auth";
 
     // ✅ 1. Force top scroll on mount
     useLayoutEffect(() => {
