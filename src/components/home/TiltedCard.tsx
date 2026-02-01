@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Search, ArrowRight } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
-
+import YearQuickLinks from "./YearQuickLinks";
 import TextType from "@/components/ui/text-type";
 import { motion, useMotionValue, useSpring, type SpringOptions } from "motion/react";
 
@@ -184,11 +184,23 @@ const HeroSection = () => {
             </div>
           </div>
 
-        
+          {/* Right */}
+          {/* <div className="lg:w-5/12 flex justify-center">
+            <TiltedCard
+              imageSrc={screenImages[currentImageIndex]}
+              captionText="Smart Dashboard"
+              displayOverlayContent
+              overlayContent={
+                <div className="absolute bottom-0 w-full p-4 bg-black/70 text-white text-sm">
+                  Interactive Dashboard
+                </div>
+              }
+            />
+          </div> */}
         </div>
 
         <div className="mt-20 border-t pt-10">
-         
+          <YearQuickLinks />
         </div>
       </div>
     </section>

@@ -1,50 +1,38 @@
-import { Link } from "react-router-dom";
-import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger, DropdownMenuDescription } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { User, LogOut, Target } from "lucide-react";
 import { toast } from "sonner";
+import { useAuth } from "@/contexts/AuthContext";
 
 const ProfileDropdown = () => {
-    // 1. Initialize state directly from localStorage if possible, or default to null
-    const [user, setUser] = useState<{ name: string; email: string; initials: string } | null>(() => {
-        const storedUser = localStorage.getItem("user");
-        if (storedUser) {
-            try {
-                const parsed = JSON.parse(storedUser);
-                // Derive initials if not present
-                const initials = parsed.name
-                    ? parsed.name.split(" ").map((n: string) => n[0]).join("").toUpperCase().substring(0, 2)
-                    : "U";
-                return { ...parsed, initials };
-            } catch (e) {
-                console.error("Failed to parse user data", e);
-                return null;
-            }
+    const { user, logout } = useAuth();
+    const navigate = useNavigate();
+
+    // Generate initials from user name
+    const getInitials = (name: string) => {
+        if (!name) return "U";
+        const parts = name.trim().split(" ");
+        if (parts.length >= 2) {
+            return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
         }
-        return null;
-    });
-
-    const handleLogout = () => {
-        // Real logout logic
-        localStorage.removeItem("token");
-        localStorage.removeItem("user");
-
-        toast.info("Logged out successfully");
-
-        // Redirect immediately
-        window.location.href = "/";
+        return name.substring(0, 2).toUpperCase();
     };
 
-    // If no user is logged in, you might want to show nothing or a Login button.
-    // For now, we'll assume this component is only shown when logged in, 
-    // or fallback to a default state if that behavior is preferred.
-    if (!user) {
-        // Optional: Render nothing or a placeholder if 'user' is missing but expected.
-        // fallback for safety to avoid crash if state is empty
-        return null;
-    }
+    const handleLogout = () => {
+        logout();
+        toast.info("Successfully logged out.", { duration: 2000 });
+
+        setTimeout(() => {
+            navigate("/");
+        }, 300);
+    };
+
+    // Fallback to default values if user is not loaded yet
+    const displayName = user?.name || "Guest User";
+    const displayEmail = user?.email || "guest@pict.edu";
+    const initials = getInitials(displayName);
 
     return (
         <DropdownMenu>
@@ -52,7 +40,7 @@ const ProfileDropdown = () => {
                 <Button variant="ghost" size="icon" className="rounded-full overflow-hidden w-10 h-10 ml-2 hover:scale-105 transition-transform duration-300">
                     <Avatar className="w-10 h-10 border border-border">
                         <AvatarFallback className="bg-primary text-primary-foreground font-semibold">
-                            {user.initials}
+                            {initials}
                         </AvatarFallback>
                     </Avatar>
                 </Button>
@@ -60,10 +48,10 @@ const ProfileDropdown = () => {
             <DropdownMenuContent className="w-56" align="end" forceMount>
                 <DropdownMenuLabel className="font-semibold flex items-center gap-2">
                     <User className="w-4 h-4" />
-                    {user.name}
+                    {displayName}
                 </DropdownMenuLabel>
                 <DropdownMenuDescription className="text-xs text-muted-foreground truncate px-2 mb-1">
-                    {user.email}
+                    {displayEmail}
                 </DropdownMenuDescription>
                 <DropdownMenuSeparator />
 

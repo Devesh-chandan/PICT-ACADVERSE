@@ -23,6 +23,7 @@ const pyqSchema = new mongoose.Schema({
   paperType: { type: String, required: true }, // "End-Sem", "In-Sem"
   title: { type: String, required: true },
   fileUrl: { type: String, required: true }, // Cloudinary URL
+  uploadedBy: { type: String }, // Clerk user ID (optional for backwards compatibility)
   uploadedAt: { type: Date, default: Date.now }
 });
 
