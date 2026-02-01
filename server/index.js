@@ -10,7 +10,18 @@ import authRoutes from "./routes/authRoutes.js";
 
 dotenv.config();
 const app = express();
-app.use(cors());
+
+// CORS configuration - Allow frontend domains
+app.use(cors({
+  origin: [
+    'http://localhost:5173',
+    'https://pictacadverse.vercel.app',
+    'https://pictacadverse-git-main-dip-2007s-projects.vercel.app',
+    'https://pictacadverse-p4b8vif6d-dip-2007s-projects.vercel.app'
+  ],
+  credentials: true
+}));
+
 app.use(express.json());
 
 // Cloudinary Config
