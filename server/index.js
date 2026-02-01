@@ -116,9 +116,11 @@ app.post("/api/pyqs", verifyToken, upload.single("file"), async (req, res) => {
   }
 });
 
+
 // Health check route
 app.get("/api/health", (req, res) => {
   res.json({ status: "ok", message: "Server is running with JWT authentication" });
 });
 
-app.listen(5000, () => console.log("🚀 Server running on port 5000 with JWT auth"));
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT} with JWT auth`));
