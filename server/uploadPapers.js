@@ -143,7 +143,7 @@ const papersToAdd = [
   // },
   {
     filename: "Devesh-04-12-25.pdf",
-    subject: "Quantum Physics(QP)",
+    subject: "Quantum Physics (QP)",
     year: "1",
     paperType: "In-Sem",
     title: "In Sem 2024 - Feb"
