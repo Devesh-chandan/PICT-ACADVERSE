@@ -33,7 +33,7 @@
 // const uploadPapers = async () => {
 //   try {
 //     if (!process.env.MONGO_URI) throw new Error("MONGO_URI is missing in .env");
-    
+
 //     await mongoose.connect(process.env.MONGO_URI);
 //     console.log('✅ Connected to MongoDB\n');
 
@@ -63,7 +63,7 @@
 
 //         // 3. UPLOAD TO CLOUDINARY
 //         console.log(`  ☁️  Uploading to Cloudinary as '${cleanName}'...`);
-        
+
 //         const result = await cloudinary.uploader.upload(localFilePath, {
 //           resource_type: "auto",      // Detects PDF/Image automatically
 //           folder: "examorbit_pyqs",
@@ -92,7 +92,7 @@
 //       }
 //       console.log('-----------------------------------');
 //     }
-    
+
 //     console.log("🎉 All operations completed.");
 //     process.exit();
 
@@ -128,18 +128,25 @@ cloudinary.config({
 // Put your PDF files inside a folder named 'uploads' in the same directory as this script
 const papersToAdd = [
   {
-    filename: "exp 5 print 1.pdf",  
-    subject: "Computer Organisation and Architecture (COA)",      
-    year: "2",                            
-    paperType: "In-Sem",                 
-    title: "In Sem 2024 - Dec"           
+    filename: "LAC ISE-25.pdf",
+    subject: "Computer Organisation and Architecture (COA)",
+    year: "2",
+    paperType: "In-Sem",
+    title: "In Sem 2024 - Feb"
+  },
+  {
+    filename: "Devesh-04-12-25.pdf",
+    subject: "Computer Organisation and Architecture (COA)",
+    year: "2",
+    paperType: "In-Sem",
+    title: "In Sem 2024 - Dec"
   }
 ];
 
 const uploadPapers = async () => {
   try {
     if (!process.env.MONGO_URI) throw new Error("MONGO_URI is missing in .env");
-    
+
     await mongoose.connect(process.env.MONGO_URI);
     console.log('✅ Connected to MongoDB\n');
 
@@ -164,18 +171,18 @@ const uploadPapers = async () => {
         // 3. Prepare Clean Filename (Sanitize)
         // "final exp5-2 (1).pdf" -> "final_exp5-2_1"
         const cleanName = paper.filename
-          .replace(/\.[^/.]+$/, "")       
-          .replace(/[^a-zA-Z0-9]/g, "_"); 
+          .replace(/\.[^/.]+$/, "")
+          .replace(/[^a-zA-Z0-9]/g, "_");
 
         // 4. Upload to Cloudinary
         console.log(`  ☁️  Uploading to Cloudinary as '${cleanName}'...`);
         const result = await cloudinary.uploader.upload(localFilePath, {
-          resource_type: "auto",      
+          resource_type: "auto",
           folder: "examorbit_pyqs",
           public_id: cleanName,       // Forces clean name
-          use_filename: true,        
+          use_filename: true,
           unique_filename: false,     // FALSE = Keeps URL clean
-          overwrite: true             
+          overwrite: true
         });
 
         // 5. Save to MongoDB
@@ -184,7 +191,7 @@ const uploadPapers = async () => {
           year: paper.year,
           paperType: paper.paperType,
           title: paper.title,
-          fileUrl: result.secure_url, 
+          fileUrl: result.secure_url,
           uploadedAt: new Date()
         });
 
@@ -197,7 +204,7 @@ const uploadPapers = async () => {
       }
       console.log('-----------------------------------');
     }
-    
+
     console.log("🎉 All operations completed.");
     process.exit();
 
