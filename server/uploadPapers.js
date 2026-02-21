@@ -146,7 +146,7 @@ const papersToAdd = [
     subject: "Quantum Physics(QP)",
     year: "1",
     paperType: "In-Sem",
-    title: "In Sem 2024 - FEB"
+    title: "In Sem 2024 - Feb"
   },
 ];
 
