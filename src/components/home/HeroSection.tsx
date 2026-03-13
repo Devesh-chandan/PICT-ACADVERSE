@@ -556,7 +556,7 @@
 //       >
 //         <div className="container mx-auto px-6 lg:px-12">
 //           <div className={`flex flex-col lg:flex-row items-center gap-12 lg:gap-24 ${isEven ? "lg:flex-row" : "lg:flex-row-reverse"}`}>
-            
+
 //             {/* TEXT SIDE */}
 //             <motion.div
 //               initial={{ opacity: 0, x: isEven ? -50 : 50 }}
@@ -584,7 +584,7 @@
 //                     shineColor="#00ddeb"
 //                 />
 //               </div>
-              
+
 //               <div className="text-lg text-muted-foreground leading-relaxed cursor-default">
 //                  <VariableProximity
 //                    label={data.description}
@@ -655,7 +655,7 @@
 //       <style>
 //         {`
 //         @import url('https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,100..1000&display=swap');
-        
+
 //         /* STATIC STAR BACKGROUND CSS */
 //         .stars-static {
 //           background-image: 
@@ -683,10 +683,10 @@
 //       <div className="fixed inset-0 z-0 pointer-events-none bg-black">
 //          {/* Deep space radial gradient base */}
 //          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.05)_0%,rgba(0,0,0,0)_80%)]" />
-         
+
 //          {/* Static twinkling stars (The 'ideal' stars backdrop) */}
 //          <div className="stars-static absolute inset-0" />
-         
+
 //          {/* Moving Shooting Stars - Layer 1 (Cyan Theme) */}
 //          <ShootingStars
 //            starColor="#00ddeb"
@@ -696,7 +696,7 @@
 //            minDelay={1000}
 //            maxDelay={3000}
 //          />
-         
+
 //          {/* Moving Shooting Stars - Layer 2 (Purple Theme) */}
 //          <ShootingStars
 //            starColor="#af40ff"
@@ -706,7 +706,7 @@
 //            minDelay={2000}
 //            maxDelay={4000}
 //          />
-         
+
 //          {/* Moving Shooting Stars - Layer 3 (White/Blue Theme) */}
 //          <ShootingStars
 //            starColor="#ffffff"
@@ -720,7 +720,7 @@
 
 //       {/* 2. SCROLLABLE CONTENT LAYER */}
 //       <div className="relative z-10 w-full flex flex-col">
-        
+
 //         {/* HERO */}
 //         <section 
 //           ref={containerRef} 
@@ -821,17 +821,17 @@ import React, { useState, useCallback, useEffect, useRef, useMemo, forwardRef, M
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, CheckCircle2, Sparkles, BookOpen, Activity, X, Maximize2 } from "lucide-react";
-import { 
-  motion, 
-  useScroll, 
-  useTransform, 
-  useMotionValue, 
-  useAnimationFrame, 
-  AnimatePresence, 
-  useSpring, 
-  type SpringOptions, 
+import {
+  motion,
+  useScroll,
+  useTransform,
+  useMotionValue,
+  useAnimationFrame,
+  AnimatePresence,
+  useSpring,
+  type SpringOptions,
   type Transition,
-  type HTMLMotionProps 
+  type HTMLMotionProps
 } from "motion/react";
 import { ShootingStars } from "@/components/ui/shooting-stars";
 import { cn } from '@/lib/utils';
@@ -1012,8 +1012,8 @@ const ImagePreviewModal = ({ src, alt, isOpen, onClose }: { src: string; alt: st
           className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-md p-4 md:p-8"
           onClick={onClose}
         >
-          <button 
-            onClick={onClose} 
+          <button
+            onClick={onClose}
             className="absolute top-6 right-6 md:top-8 md:right-8 p-2 rounded-full bg-white/10 hover:bg-white/20 text-white/70 hover:text-white transition-all z-50 pointer-events-auto"
           >
             <X className="w-8 h-8" />
@@ -1027,9 +1027,9 @@ const ImagePreviewModal = ({ src, alt, isOpen, onClose }: { src: string; alt: st
             className="relative max-w-7xl max-h-[90vh] w-full flex justify-center pointer-events-auto"
             onClick={(e) => e.stopPropagation()}
           >
-            <img 
-              src={src} 
-              alt={alt} 
+            <img
+              src={src}
+              alt={alt}
               className="w-auto h-auto max-h-[85vh] max-w-full rounded-lg shadow-2xl border border-white/10 object-contain"
             />
             <div className="absolute -bottom-10 text-white/50 text-sm font-medium tracking-widest uppercase">
@@ -1056,11 +1056,11 @@ const ScrollDownIndicator = () => {
       <div className="h-16 w-[1px] bg-gradient-to-b from-transparent via-white/20 to-transparent relative overflow-hidden">
         <motion.div
           animate={{ y: [-20, 40] }}
-          transition={{ 
-            duration: 1.5, 
-            repeat: Infinity, 
+          transition={{
+            duration: 1.5,
+            repeat: Infinity,
             ease: "easeInOut",
-            repeatDelay: 0.5 
+            repeatDelay: 0.5
           }}
           className="absolute top-0 left-0 w-full h-1/2 bg-gradient-to-b from-transparent via-[#00ddeb] to-transparent"
         />
@@ -1102,35 +1102,35 @@ const MacbookMockup = ({ src, alt, onPreview }: MacbookMockupProps) => {
       <div className="relative bg-[#0f0f10] rounded-[14px] p-[2%] ring-1 ring-white/10 shadow-[0_0_0_1px_rgba(255,255,255,0.05)] border-t border-white/5">
         <div className="relative w-full aspect-[16/10] bg-black rounded-[6px] overflow-hidden border border-white/5 shadow-inner">
           <div className="absolute top-3 left-3 md:top-4 md:left-4 flex gap-1.5 md:gap-2 z-20 pointer-events-none">
-             <div className="w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-[#ff5f57] border border-[#e33e32] shadow-sm" />
-             <div className="w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-[#febc2e] border border-[#dba026] shadow-sm" />
-             <div className="w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-[#28c840] border border-[#1fa733] shadow-sm" />
+            <div className="w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-[#ff5f57] border border-[#e33e32] shadow-sm" />
+            <div className="w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-[#febc2e] border border-[#dba026] shadow-sm" />
+            <div className="w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-[#28c840] border border-[#1fa733] shadow-sm" />
           </div>
-          <div 
+          <div
             className="relative w-full h-full bg-[#1e1e1e] cursor-zoom-in"
             onClick={onPreview}
           >
-             <img
-               src={src}
-               alt={alt}
-               className="w-full h-full object-cover object-top transform transition-transform duration-700 group-hover/laptop:scale-[1.02]"
-             />
-             <div className="absolute inset-0 bg-black/20 opacity-0 group-hover/laptop:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                <div className="bg-black/60 backdrop-blur-sm text-white text-xs font-medium px-3 py-1.5 rounded-full flex items-center gap-2 border border-white/10">
-                  <Maximize2 className="w-3 h-3" /> Click to Preview
-                </div>
-             </div>
-             <div className="absolute inset-0 bg-gradient-to-tr from-white/5 via-transparent to-transparent opacity-30 pointer-events-none" />
+            <img
+              src={src}
+              alt={alt}
+              className="w-full h-full object-cover object-top transform transition-transform duration-700 group-hover/laptop:scale-[1.02]"
+            />
+            <div className="absolute inset-0 bg-black/20 opacity-0 group-hover/laptop:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+              <div className="bg-black/60 backdrop-blur-sm text-white text-xs font-medium px-3 py-1.5 rounded-full flex items-center gap-2 border border-white/10">
+                <Maximize2 className="w-3 h-3" /> Click to Preview
+              </div>
+            </div>
+            <div className="absolute inset-0 bg-gradient-to-tr from-white/5 via-transparent to-transparent opacity-30 pointer-events-none" />
           </div>
         </div>
         <div className="absolute bottom-[0.5%] left-1/2 -translate-x-1/2 text-[8px] text-white/10 font-medium tracking-widest uppercase">
-            MacBook Pro
+          MacBook Pro
         </div>
       </div>
       <div className="relative -mt-[1px] mx-auto w-full">
         <div className="h-[12px] md:h-[16px] w-full bg-[#151516] rounded-b-[10px] md:rounded-b-[16px] border-x border-b border-white/10 shadow-2xl relative z-10">
-            <div className="absolute top-0 inset-x-[2%] h-[1px] bg-white/20" />
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[15%] h-[40%] bg-[#0f0f10] rounded-b-md border-b border-x border-white/5" />
+          <div className="absolute top-0 inset-x-[2%] h-[1px] bg-white/20" />
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[15%] h-[40%] bg-[#0f0f10] rounded-b-md border-b border-x border-white/5" />
         </div>
         <div className="absolute -bottom-8 left-[5%] right-[5%] h-8 bg-black/80 blur-xl rounded-[100%]" />
       </div>
@@ -1215,9 +1215,9 @@ const VariableProximity = forwardRef<HTMLSpanElement, VariableProximityProps>((p
     const parseSettings = (settingsStr: string) =>
       new Map(
         settingsStr.split(',').map(s => s.trim()).map(s => {
-            const [name, value] = s.split(' ');
-            return [name.replace(/['"]/g, ''), parseFloat(value)];
-          })
+          const [name, value] = s.split(' ');
+          return [name.replace(/['"]/g, ''), parseFloat(value)];
+        })
       );
     const fromSettings = parseSettings(fromFontVariationSettings);
     const toSettings = parseSettings(toFontVariationSettings);
@@ -1412,13 +1412,13 @@ const TextLoop = () => {
           transition={{ duration: 0.5, ease: "easeInOut" }}
           className="absolute w-full px-4"
         >
-          <ShinyText 
+          <ShinyText
             text={items[index]}
             disabled={false}
             speed={3}
             className="text-xl md:text-2xl font-normal"
-            color="#a1a1aa" 
-            shineColor="#ffffff" 
+            color="#a1a1aa"
+            shineColor="#ffffff"
           />
         </motion.div>
       </AnimatePresence>
@@ -1438,7 +1438,7 @@ const features = [
     description: "Access a centralized vault of Previous Year Question Papers for all years, all exams, and the autonomous pattern. Study exactly what has appeared before and practice with confidence.",
     tags: ["PYQs for Every Year", "All Exams Covered", "Distraction-Free"],
     image: "https://iili.io/fOpPV3J.png",
-    icon: <BookOpen className="w-6 h-6 text-[#00ddeb]" />, 
+    icon: <BookOpen className="w-6 h-6 text-[#00ddeb]" />,
     color: "from-[#00ddeb]/20",
     link: "/pyqs",
     cta: "Enter Vault"
@@ -1450,7 +1450,7 @@ const features = [
     description: "Your personal space to monitor progress, maintain study streaks, and stay exam-ready. Everything you need to plan, track, and improve—at one place.",
     tags: ["Streak Tracking", "Subject-wise Progress", "Exam Countdown"],
     image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=2670&auto=format&fit=crop",
-    icon: <Activity className="w-6 h-6 text-[#28c840]" />, 
+    icon: <Activity className="w-6 h-6 text-[#28c840]" />,
     color: "from-[#28c840]/20",
     link: "/dashboard",
     cta: "Go to Dashboard"
@@ -1462,7 +1462,7 @@ const features = [
     description: "Stay informed with real-time exam updates, new PYQ uploads, and important platform announcements—so you’re always a step ahead.",
     tags: ["Exam Notifications", "New Upload Alerts", "Platform Updates"],
     image: "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?q=80&w=2573&auto=format&fit=crop",
-    icon: <Sparkles className="w-6 h-6 text-[#febc2e]" />, 
+    icon: <Sparkles className="w-6 h-6 text-[#febc2e]" />,
     color: "from-[#febc2e]/20",
     link: "/updates",
     cta: "View Updates"
@@ -1487,20 +1487,20 @@ const FeatureRow = ({ data, index }: { data: typeof features[0]; index: number }
 
   return (
     <>
-      <ImagePreviewModal 
-        src={data.image} 
-        alt={data.title} 
-        isOpen={isPreviewOpen} 
-        onClose={() => setIsPreviewOpen(false)} 
+      <ImagePreviewModal
+        src={data.image}
+        alt={data.title}
+        isOpen={isPreviewOpen}
+        onClose={() => setIsPreviewOpen(false)}
       />
 
-      <div 
-        ref={rowContainerRef} 
+      <div
+        ref={rowContainerRef}
         className="relative z-10 w-full flex items-center justify-center py-20 lg:py-32 bg-transparent pointer-events-none"
       >
         <div className="container mx-auto px-6 lg:px-12 pointer-events-none">
           <div className={`flex flex-col lg:flex-row items-center gap-12 lg:gap-24 ${isEven ? "lg:flex-row" : "lg:flex-row-reverse"}`}>
-            
+
             {/* TEXT SIDE */}
             <motion.div
               initial={{ opacity: 0, x: isEven ? -50 : 50 }}
@@ -1510,35 +1510,35 @@ const FeatureRow = ({ data, index }: { data: typeof features[0]; index: number }
               className="w-full lg:w-1/2 space-y-8 pointer-events-auto"
             >
               <h2 className="text-4xl md:text-5xl font-bold leading-tight pb-1">
-                 <motion.span 
-                   style={{ x: xTransform, display: "inline-block" }}
-                   className="bg-clip-text text-transparent bg-gradient-to-r from-white to-white/60 font-sans whitespace-nowrap"
-                 >
-                   {data.title}
-                 </motion.span>
+                <motion.span
+                  style={{ x: xTransform, display: "inline-block" }}
+                  className="bg-clip-text text-transparent bg-gradient-to-r from-white to-white/60 font-sans whitespace-nowrap"
+                >
+                  {data.title}
+                </motion.span>
               </h2>
 
               <div className="text-lg md:text-xl font-medium">
-                <ShinyText 
-                    text={data.subtitle} 
-                    disabled={false} 
-                    speed={3} 
-                    className="" 
-                    color="#a1a1aa" 
-                    shineColor="#00ddeb"
+                <ShinyText
+                  text={data.subtitle}
+                  disabled={false}
+                  speed={3}
+                  className=""
+                  color="#a1a1aa"
+                  shineColor="#00ddeb"
                 />
               </div>
-              
+
               <div className="text-lg text-muted-foreground leading-relaxed cursor-default">
-                 <VariableProximity
-                   label={data.description}
-                   className="block"
-                   fromFontVariationSettings="'wght' 400, 'opsz' 10"
-                   toFontVariationSettings="'wght' 700, 'opsz' 12" 
-                   containerRef={rowContainerRef}
-                   radius={80} 
-                   falloff="linear"
-                  />
+                <VariableProximity
+                  label={data.description}
+                  className="block"
+                  fromFontVariationSettings="'wght' 400, 'opsz' 10"
+                  toFontVariationSettings="'wght' 700, 'opsz' 12"
+                  containerRef={rowContainerRef}
+                  radius={80}
+                  falloff="linear"
+                />
               </div>
 
               <div className="flex flex-wrap gap-3">
@@ -1551,8 +1551,8 @@ const FeatureRow = ({ data, index }: { data: typeof features[0]; index: number }
               </div>
 
               <Link to={data.link}>
-                <Button 
-                  variant="outline" 
+                <Button
+                  variant="outline"
                   className="h-12 px-8 rounded-full border-white/10 hover:bg-white/10 hover:text-[#00ddeb] transition-all group backdrop-blur-md bg-white/5"
                 >
                   {data.cta}
@@ -1570,9 +1570,9 @@ const FeatureRow = ({ data, index }: { data: typeof features[0]; index: number }
               className="w-full lg:w-1/2 relative perspective-1000 pointer-events-auto"
             >
               <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-gradient-to-tr ${data.color} to-transparent blur-[100px] rounded-full -z-10 opacity-60`} />
-              <MacbookMockup 
-                src={data.image} 
-                alt={data.title} 
+              <MacbookMockup
+                src={data.image}
+                alt={data.title}
                 onPreview={() => setIsPreviewOpen(true)}
               />
             </motion.div>
@@ -1584,7 +1584,7 @@ const FeatureRow = ({ data, index }: { data: typeof features[0]; index: number }
 };
 
 const HeroSection = () => {
-  const containerRef = useRef<HTMLDivElement>(null); 
+  const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll(); // Global scroll
   const { resolvedTheme } = useTheme();
 
@@ -1603,78 +1603,78 @@ const HeroSection = () => {
 
       {/* 1. BLENDED BACKGROUND LAYER */}
       <div className="absolute inset-0 z-0">
-         {/* Base Star Field (Interative) */}
-         <StarsBackground
-            starColor="#FFFFFF"
-            factor={0.02} // Sensitivity of hover movement
-            speed={80} // Slower speed for distant stars
-            className={cn(
-              'absolute inset-0 flex items-center justify-center pointer-events-auto', // pointer-events-auto here enables the hover effect
-              'bg-[radial-gradient(ellipse_at_bottom,_#1a1a1a_0%,_#000_100%)]',
-            )}
-         />
-         
-         {/* Moving Shooting Stars - Layer 1 (Cyan Theme) */}
-         <div className="absolute inset-0 pointer-events-none mix-blend-screen">
-            <ShootingStars
-              starColor="#00ddeb"
-              trailColor="#2EB9DF"
-              minSpeed={15}
-              maxSpeed={35}
-              minDelay={1000}
-              maxDelay={3000}
-            />
-         </div>
-         
-         {/* Moving Shooting Stars - Layer 2 (Purple Theme) */}
-         <div className="absolute inset-0 pointer-events-none mix-blend-screen">
-            <ShootingStars
-              starColor="#af40ff"
-              trailColor="#5b42f3"
-              minSpeed={10}
-              maxSpeed={25}
-              minDelay={2000}
-              maxDelay={4000}
-            />
-         </div>
-         
-         {/* Moving Shooting Stars - Layer 3 (White/Blue Theme) */}
-         <div className="absolute inset-0 pointer-events-none mix-blend-screen">
-            <ShootingStars
-              starColor="#ffffff"
-              trailColor="#00ddeb"
-              minSpeed={20}
-              maxSpeed={40}
-              minDelay={1500}
-              maxDelay={3500}
-            />
-         </div>
+        {/* Base Star Field (Interative) */}
+        <StarsBackground
+          starColor="#FFFFFF"
+          factor={0.02} // Sensitivity of hover movement
+          speed={80} // Slower speed for distant stars
+          className={cn(
+            'absolute inset-0 flex items-center justify-center pointer-events-auto', // pointer-events-auto here enables the hover effect
+            'bg-[radial-gradient(ellipse_at_bottom,_#1a1a1a_0%,_#000_100%)]',
+          )}
+        />
+
+        {/* Moving Shooting Stars - Layer 1 (Cyan Theme) */}
+        <div className="absolute inset-0 pointer-events-none mix-blend-screen">
+          <ShootingStars
+            starColor="#00ddeb"
+            trailColor="#2EB9DF"
+            minSpeed={15}
+            maxSpeed={35}
+            minDelay={1000}
+            maxDelay={3000}
+          />
+        </div>
+
+        {/* Moving Shooting Stars - Layer 2 (Purple Theme) */}
+        <div className="absolute inset-0 pointer-events-none mix-blend-screen">
+          <ShootingStars
+            starColor="#af40ff"
+            trailColor="#5b42f3"
+            minSpeed={10}
+            maxSpeed={25}
+            minDelay={2000}
+            maxDelay={4000}
+          />
+        </div>
+
+        {/* Moving Shooting Stars - Layer 3 (White/Blue Theme) */}
+        <div className="absolute inset-0 pointer-events-none mix-blend-screen">
+          <ShootingStars
+            starColor="#ffffff"
+            trailColor="#00ddeb"
+            minSpeed={20}
+            maxSpeed={40}
+            minDelay={1500}
+            maxDelay={3500}
+          />
+        </div>
       </div>
 
       {/* 2. SCROLLABLE CONTENT LAYER */}
       {/* pointer-events-none on container so mouse passes through to stars, but enabled on children */}
       <div className="relative z-10 w-full flex flex-col pointer-events-none">
-        
+
         {/* HERO */}
-        <section 
-          ref={containerRef} 
+        <section
+          ref={containerRef}
           className="relative flex flex-col items-center justify-center min-h-screen px-4 pt-[15vh] pb-20"
         >
-          <motion.div 
+          <motion.div
             style={{ opacity, scale }}
             className="container mx-auto text-center space-y-8 pointer-events-auto"
           >
-              <motion.div
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
             >
-              <h1 
+              <h1
                 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tighter text-center max-w-5xl mx-auto cursor-default"
                 style={{ lineHeight: 1.1 }}
               >
                 <VariableProximity
-                  label="Practice Smarter"
+                  label=" Smarter"
                   className="bg-clip-text text-transparent bg-gradient-to-b from-white via-white/80 to-white/40"
                   fromFontVariationSettings="'wght' 400, 'opsz' 9"
                   toFontVariationSettings="'wght' 900, 'opsz' 40"
@@ -1704,11 +1704,11 @@ const HeroSection = () => {
               <TextLoop />
             </motion.div>
 
-            <motion.div 
-               initial={{ opacity: 0, y: 20 }}
-               animate={{ opacity: 1, y: 0 }}
-               transition={{ duration: 0.5, delay: 0.3 }}
-               className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4"
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4"
             >
               <CosmicButton />
             </motion.div>
