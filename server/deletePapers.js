@@ -28,6 +28,13 @@ const papersToDelete = [
         paperType: "In-Sem",
         title: "In Sem 2024 - Dec"
     },
+    {
+        filename: "Devesh-04-12-25.pdf",
+        subject: "Quantum Physics (QP)",
+        year: "1",
+        paperType: "In-Sem",
+        title: "In Sem 2024 - Feb"
+    },
     // Add more entries here to delete multiple at once:
     // {
     //   filename: "Devesh-04-12-25.pdf",
