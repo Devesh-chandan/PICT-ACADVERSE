@@ -793,7 +793,7 @@ const Dashboard = () => {
                     <h3 className="text-xl font-bold text-white flex items-center gap-2">
                         <Sparkles className="w-5 h-5 text-purple-400" /> Recently Added
                     </h3>
-                    <Link to="/updates" className="text-xs text-purple-400 hover:text-white flex items-center gap-1 transition-colors px-3 py-1.5 rounded-lg hover:bg-white/5">
+                    <Link to="/vault" className="text-xs text-purple-400 hover:text-white flex items-center gap-1 transition-colors px-3 py-1.5 rounded-lg hover:bg-white/5">
                         View All <ArrowRight className="w-3 h-3" />
                     </Link>
                 </div>
@@ -895,7 +895,7 @@ const Dashboard = () => {
                    <h3 className="text-lg font-bold text-white flex items-center gap-2">
                      AI Question Predictor <span className="text-[10px] bg-indigo-500 text-white px-2 py-0.5 rounded-full uppercase tracking-wide">Beta</span>
                    </h3>
-                   <p className="text-slate-400 text-sm">Generate smart predictions based on 1 years of PYQ patterns.</p>
+                   <p className="text-slate-400 text-sm">Generate smart predictions based on 5 years of PYQ patterns.</p>
                  </div>
                </div>
                <button className="hidden sm:flex items-center gap-2 text-indigo-300 hover:text-white transition-colors text-sm font-semibold relative z-10 cursor-not-allowed opacity-70">
@@ -909,7 +909,7 @@ const Dashboard = () => {
             <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 border-b border-white/5 pb-4">
               <div>
                 <h2 className="text-2xl font-bold text-white tracking-tight">Repository Stats</h2>
-                <p className="text-slate-400 text-sm mt-1">Select a branch and year to view detailed subject availability.</p>
+                <p className="text-slate-400 text-sm mt-1">Select a branch to view detailed subject availability.</p>
               </div>
               
               {/* Year Filter Dropdown */}

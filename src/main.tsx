@@ -1,16 +1,15 @@
-import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { GoogleOAuthProvider } from "@react-oauth/google";
 import App from "./App.tsx";
 import "./index.css";
+import { AuthProvider } from "./contexts/AuthContext";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
-// PLACEHOLDER CLIENT ID - User needs to replace this
-const GOOGLE_CLIENT_ID = "615737437594-llh6ufger8qdbqura26pjgaqubn5t3dp.apps.googleusercontent.com";
+const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || "your_google_client_id_here";
 
 createRoot(document.getElementById("root")!).render(
-  <StrictMode>
-    <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
+  <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
+    <AuthProvider>
       <App />
-    </GoogleOAuthProvider>
-  </StrictMode>
+    </AuthProvider>
+  </GoogleOAuthProvider>
 );

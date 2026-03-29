@@ -127,20 +127,27 @@ cloudinary.config({
 // --- FILES TO UPLOAD ---
 // Put your PDF files inside a folder named 'uploads' in the same directory as this script
 const papersToAdd = [
+  // {
+  //   filename: "LAC ISE-25.pdf",
+  //   subject: "Computer Organisation and Architecture (COA)",
+  //   year: "2",
+  //   paperType: "In-Sem",
+  //   title: "In Sem 2024 - Feb"
+  // },
+  // {
+  //   filename: "Devesh-04-12-25.pdf",
+  //   subject: "Computer Organisation and Architecture (COA)",
+  //   year: "2",
+  //   paperType: "In-Sem",
+  //   title: "In Sem 2024 - Dec"
+  // },
   {
-    filename: "exp 5 print 1.pdf",
-    subject: "Computer Organisation and Architecture (COA)",
-    year: "2",
+    filename: "Module I Assignment _1.pdf",
+    subject: "Quantum Physics (QP)",
+    year: "1",
     paperType: "In-Sem",
-    title: "In Sem 2024 - Dec"
+    title: "In Sem 2024 - Feb"
   },
-  {
-    filename: "Devesh-04-12-25.pdf",
-    subject: "Computer Organisation and Architecture (COA)",
-    year: "2",
-    paperType: "End-Sem",
-    title: "End Sem 2024 - Dec"
-  }
 ];
 
 const uploadPapers = async () => {
