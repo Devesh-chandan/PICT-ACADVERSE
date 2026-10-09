@@ -1,112 +1,74 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { Link } from "react-router-dom";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { 
-  Search, 
-  Download, 
-  Eye, 
-  BookmarkPlus,
-  Star,
-  Upload,
-  BookOpen,
-  FileText,
-  User,
-  Calendar
-} from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Search, Download, Eye, Upload, BookOpen, FileText, User, Calendar } from "lucide-react";
+import api from "@/lib/api";
+import { useAuth } from "@/contexts/AuthContext";
 
-const subjects = ["All", "DSA", "DBMS", "OS", "CN", "TOC", "SE", "AI"];
+interface PublicNote {
+  _id: string;
+  title: string;
+  subject: string;
+  author: string;
+  description: string;
+  pages: number;
+  fileUrl: string;
+  downloads: number;
+  uploadedAt: string;
+}
 
-const notesData = [
-  {
-    id: 1,
-    title: "Complete DSA Notes - All Modules",
-    subject: "DSA",
-    author: "Rahul Mehta",
-    rating: 4.9,
-    reviews: 156,
-    downloads: 2345,
-    pages: 120,
-    uploadDate: "Nov 15, 2024",
-    preview: "Comprehensive notes covering arrays, linked lists, trees, graphs, sorting, and more.",
-    color: "from-blue-500 to-indigo-500",
-  },
-  {
-    id: 2,
-    title: "DBMS One-Shot Revision Notes",
-    subject: "DBMS",
-    author: "Priya Sharma",
-    rating: 4.8,
-    reviews: 124,
-    downloads: 1890,
-    pages: 85,
-    uploadDate: "Nov 10, 2024",
-    preview: "Quick revision notes for ER diagrams, normalization, SQL queries, and transactions.",
-    color: "from-emerald-500 to-teal-500",
-  },
-  {
-    id: 3,
-    title: "Operating Systems - Important Topics",
-    subject: "OS",
-    author: "Amit Kumar",
-    rating: 4.7,
-    reviews: 98,
-    downloads: 1567,
-    pages: 95,
-    uploadDate: "Nov 8, 2024",
-    preview: "Process management, memory management, file systems, and deadlocks explained.",
-    color: "from-orange-500 to-amber-500",
-  },
-  {
-    id: 4,
-    title: "Computer Networks Handwritten Notes",
-    subject: "CN",
-    author: "Sneha Patel",
-    rating: 4.6,
-    reviews: 87,
-    downloads: 1234,
-    pages: 110,
-    uploadDate: "Nov 5, 2024",
-    preview: "Detailed handwritten notes covering OSI, TCP/IP, routing, and security protocols.",
-    color: "from-purple-500 to-pink-500",
-  },
-  {
-    id: 5,
-    title: "TOC - Automata & Languages",
-    subject: "TOC",
-    author: "Vikram Singh",
-    rating: 4.5,
-    reviews: 76,
-    downloads: 987,
-    pages: 75,
-    uploadDate: "Nov 1, 2024",
-    preview: "DFA, NFA, CFG, PDA, and Turing machines with solved examples.",
-    color: "from-rose-500 to-red-500",
-  },
-  {
-    id: 6,
-    title: "Software Engineering Complete Guide",
-    subject: "SE",
-    author: "Neha Gupta",
-    rating: 4.4,
-    reviews: 65,
-    downloads: 876,
-    pages: 90,
-    uploadDate: "Oct 28, 2024",
-    preview: "SDLC models, UML diagrams, testing strategies, and project management concepts.",
-    color: "from-cyan-500 to-sky-500",
-  },
+// Banner colours, picked deterministically from the subject so a subject always looks the same
+const BANNER_COLORS = [
+  "from-blue-500 to-indigo-500",
+  "from-emerald-500 to-teal-500",
+  "from-orange-500 to-amber-500",
+  "from-purple-500 to-pink-500",
+  "from-rose-500 to-red-500",
+  "from-cyan-500 to-sky-500",
 ];
+const bannerFor = (subject: string) => {
+  let hash = 0;
+  for (const ch of subject) hash = (hash * 31 + ch.charCodeAt(0)) >>> 0;
+  return BANNER_COLORS[hash % BANNER_COLORS.length];
+};
+
+const formatDate = (iso: string) =>
+  new Date(iso).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" });
 
 const Notes = () => {
+  const { isAdmin } = useAuth();
+  const queryClient = useQueryClient();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedSubject, setSelectedSubject] = useState("All");
 
-  const filteredNotes = notesData.filter((note) => {
-    const matchesSearch = note.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         note.preview.toLowerCase().includes(searchQuery.toLowerCase());
+  const { data: notes = [], isLoading, error, refetch } = useQuery({
+    queryKey: ["notes"],
+    queryFn: async () => (await api.get<PublicNote[]>("/notes")).data,
+  });
+
+  // The link opens straight away (no popup blocking); the counter is bumped in the background
+  const countDownload = (id: string) => {
+    api
+      .post(`/notes/${id}/download`)
+      .then(() => queryClient.invalidateQueries({ queryKey: ["notes"] }))
+      .catch(() => undefined);
+  };
+
+  const subjects = useMemo(() => ["All", ...Array.from(new Set(notes.map((n) => n.subject))).sort()], [notes]);
+
+  const q = searchQuery.trim().toLowerCase();
+  const filteredNotes = notes.filter((note) => {
+    const matchesSearch =
+      q === "" ||
+      note.title.toLowerCase().includes(q) ||
+      note.description.toLowerCase().includes(q) ||
+      note.author.toLowerCase().includes(q);
     const matchesSubject = selectedSubject === "All" || note.subject === selectedSubject;
     return matchesSearch && matchesSubject;
   });
@@ -114,7 +76,7 @@ const Notes = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-      <main className="pt-20 pb-12">
+      <main className="pt-28 pb-12">
         <div className="container mx-auto px-4">
           {/* Header */}
           <div className="flex flex-col md:flex-row md:items-center justify-between mb-8">
@@ -126,14 +88,16 @@ const Notes = () => {
               <h1 className="text-3xl md:text-4xl font-bold mb-2">
                 Student <span className="gradient-text">Notes</span>
               </h1>
-              <p className="text-muted-foreground">
-                Curated notes from top-performing students
-              </p>
+              <p className="text-muted-foreground">Curated notes from top-performing students</p>
             </div>
-            <Button variant="warm" className="mt-4 md:mt-0">
-              <Upload className="w-4 h-4 mr-2" />
-              Upload Notes
-            </Button>
+            {isAdmin && (
+              <Button asChild variant="warm" className="mt-4 md:mt-0">
+                <Link to="/admin/notes">
+                  <Upload className="w-4 h-4 mr-2" />
+                  Manage Notes
+                </Link>
+              </Button>
+            )}
           </div>
 
           {/* Search and Filters */}
@@ -143,6 +107,7 @@ const Notes = () => {
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
                 <input
                   type="text"
+                  aria-label="Search notes"
                   placeholder="Search notes..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
@@ -164,40 +129,64 @@ const Notes = () => {
             </div>
           </div>
 
+          {/* States */}
+          {isLoading && (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" aria-busy="true">
+              {Array.from({ length: 3 }).map((_, i) => (
+                <Skeleton key={i} className="h-80 rounded-xl" />
+              ))}
+            </div>
+          )}
+
+          {error && !isLoading && (
+            <div className="py-16 text-center space-y-3">
+              <p className="text-muted-foreground">Could not load notes. Is the server running?</p>
+              <Button variant="outline" onClick={() => refetch()}>
+                Try again
+              </Button>
+            </div>
+          )}
+
+          {!isLoading && !error && filteredNotes.length === 0 && (
+            <div className="py-16 text-center text-muted-foreground">
+              {notes.length === 0 ? "No notes have been uploaded yet. Check back soon!" : "No notes match your search."}
+            </div>
+          )}
+
           {/* Notes Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredNotes.map((note, index) => (
-              <Card 
-                key={note.id} 
+              <Card
+                key={note._id}
                 variant="interactive"
                 className="group animate-slide-up overflow-hidden"
-                style={{ animationDelay: `${index * 0.1}s` }}
+                style={{ animationDelay: `${Math.min(index, 8) * 0.1}s` }}
               >
                 {/* Preview Banner */}
-                <div className={`h-32 bg-gradient-to-br ${note.color} relative overflow-hidden`}>
+                <div className={`h-32 bg-gradient-to-br ${bannerFor(note.subject)} relative overflow-hidden`}>
                   <div className="absolute inset-0 bg-black/20" />
                   <div className="absolute inset-0 flex items-center justify-center">
                     <FileText className="w-16 h-16 text-white/50" />
                   </div>
-                  <div className="absolute top-3 right-3">
+                  <div className="absolute top-3 left-3">
                     <Badge variant="glass" className="bg-white/20 text-white border-white/30">
-                      {note.pages} pages
+                      {note.subject}
                     </Badge>
                   </div>
+                  {note.pages > 0 && (
+                    <div className="absolute top-3 right-3">
+                      <Badge variant="glass" className="bg-white/20 text-white border-white/30">
+                        {note.pages} pages
+                      </Badge>
+                    </div>
+                  )}
                 </div>
 
                 <CardContent className="p-5">
-                  {/* Title */}
-                  <h3 className="font-bold text-lg mb-2 group-hover:text-primary transition-colors line-clamp-2">
-                    {note.title}
-                  </h3>
+                  <h3 className="font-bold text-lg mb-2 group-hover:text-primary transition-colors line-clamp-2">{note.title}</h3>
 
-                  {/* Preview Text */}
-                  <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
-                    {note.preview}
-                  </p>
+                  {note.description && <p className="text-sm text-muted-foreground mb-4 line-clamp-2">{note.description}</p>}
 
-                  {/* Author & Date */}
                   <div className="flex items-center gap-3 text-sm text-muted-foreground mb-4">
                     <span className="flex items-center gap-1">
                       <User className="w-4 h-4" />
@@ -205,34 +194,28 @@ const Notes = () => {
                     </span>
                     <span className="flex items-center gap-1">
                       <Calendar className="w-4 h-4" />
-                      {note.uploadDate}
+                      {formatDate(note.uploadedAt)}
                     </span>
                   </div>
 
-                  {/* Rating & Downloads */}
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="flex items-center gap-1">
-                      <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
-                      <span className="font-medium">{note.rating}</span>
-                      <span className="text-muted-foreground text-sm">({note.reviews})</span>
-                    </div>
-                    <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                  <div className="flex items-center justify-between mb-4 text-sm text-muted-foreground">
+                    <span className="flex items-center gap-1">
                       <Download className="w-4 h-4" />
-                      {note.downloads.toLocaleString()}
-                    </div>
+                      {note.downloads.toLocaleString()} downloads
+                    </span>
                   </div>
 
-                  {/* Actions */}
                   <div className="flex gap-2">
-                    <Button variant="default" className="flex-1">
-                      <Eye className="w-4 h-4 mr-2" />
-                      Preview
+                    <Button asChild variant="default" className="flex-1">
+                      <a href={note.fileUrl} target="_blank" rel="noopener noreferrer">
+                        <Eye className="w-4 h-4 mr-2" />
+                        Preview
+                      </a>
                     </Button>
-                    <Button variant="outline" size="icon">
-                      <BookmarkPlus className="w-4 h-4" />
-                    </Button>
-                    <Button variant="outline" size="icon">
-                      <Download className="w-4 h-4" />
+                    <Button asChild variant="outline" size="icon" aria-label={`Download ${note.title}`}>
+                      <a href={note.fileUrl} target="_blank" rel="noopener noreferrer" onClick={() => countDownload(note._id)}>
+                        <Download className="w-4 h-4" />
+                      </a>
                     </Button>
                   </div>
                 </CardContent>

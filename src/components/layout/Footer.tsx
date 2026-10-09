@@ -492,6 +492,15 @@ import {
 // DOCK COMPONENT (Physics Based)
 // ==================================================================================
 
+type DockItemData = {
+  icon: React.ReactNode;
+  label: string;
+  role: string;
+  className?: string;
+  onClick?: () => void;
+  socials?: Record<string, string>;
+};
+
 type DockItemProps = {
   children: React.ReactNode;
   className?: string;
@@ -535,14 +544,14 @@ function DockItem({
     >
       {Children.map(children, child =>
         React.isValidElement(child)
-          ? cloneElement(child as React.ReactElement<any>, { isHovered })
+          ? cloneElement(child as React.ReactElement<{ isHovered?: MotionValue<number> }>, { isHovered })
           : child
       )}
     </motion.div>
   );
 }
 
-function DockSocialPopup({ isHovered, label, role, socials }: { isHovered?: MotionValue<number>; label: string; role: string; socials: any }) {
+function DockSocialPopup({ isHovered, label, role, socials }: { isHovered?: MotionValue<number>; label: string; role: string; socials?: Record<string, string> }) {
   const [isOpen, setIsOpen] = useState(false);
   
   useEffect(() => {
@@ -594,7 +603,7 @@ function Dock({
   distance = 140,
   panelHeight = 64,
   baseItemSize = 40
-}: { items: any[]; className?: string; spring?: SpringOptions; magnification?: number; distance?: number; panelHeight?: number; baseItemSize?: number }) {
+}: { items: DockItemData[]; className?: string; spring?: SpringOptions; magnification?: number; distance?: number; panelHeight?: number; baseItemSize?: number }) {
   const mouseX = useMotionValue(Infinity);
   const isHovered = useMotionValue(0);
 
@@ -782,7 +791,6 @@ const Footer = () => {
                 {[
                   { name: 'Home', path: '/home' },
                   { name: 'PYQ Repository', path: '/pyqs' },
-                  { name: 'Exam Updates', path: '/updates' },
                   { name: 'Dashboard', path: '/dashboard' }
                 ].map((item) => (
                   <li key={item.name}>

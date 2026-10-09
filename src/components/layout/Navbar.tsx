@@ -4,13 +4,13 @@
 
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { RippleButton } from "@/components/ui/ripple-button";
+import { RippleButton } from "@/components/effects/ripple-button";
 import {
   Home,
   BookOpen,
-  Bell,
   LayoutDashboard,
-  Plus
+  Plus,
+  type LucideIcon
 } from "lucide-react";
 import ProfileDropdown from "./ProfileDropdown";
 import styled from "styled-components";
@@ -23,13 +23,12 @@ import { motion, AnimatePresence } from "motion/react";
 interface NavItem {
   name: string;
   href: string;
-  icon: any;
+  icon: LucideIcon;
 }
 
 const navItems: NavItem[] = [
   { name: "Home", href: "/home", icon: Home },
   { name: "PYQs", href: "/pyqs", icon: BookOpen },
-  { name: "Updates", href: "/updates", icon: Bell },
 ];
 
 // ------------------------------------
@@ -69,9 +68,6 @@ const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
   const location = useLocation();
 
-  const isLoginPage = location.pathname === '/';
-  if (isLoginPage) return null;
-
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
@@ -79,6 +75,9 @@ const Navbar = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const isLoginPage = location.pathname === '/';
+  if (isLoginPage) return null;
 
   return (
     <>
@@ -95,11 +94,8 @@ const Navbar = () => {
                   <p className="prefix">ACADVERSE-</p> 
                   <div className="words">
                     <span className="word">PYQ'S</span>
-                    <span className="word">UPDATES</span>
                     <span className="word">NOTES</span>
                     <span className="word">PYQ'S</span>
-                    <span className="word">UPDATES</span>
-                    <span className="word">NOTES</span>
                   </div>
                 </div>
               </LogoLoader>
@@ -275,11 +271,8 @@ const Navbar = () => {
                         <p className="prefix sm:hidden">PA-</p> 
                         <div className="words">
                           <span className="word">PYQ'S</span>
-                          <span className="word">UPDATES</span>
                           <span className="word">NOTES</span>
                           <span className="word">PYQ'S</span>
-                          <span className="word">UPDATES</span>
-                          <span className="word">NOTES</span>
                         </div>
                       </div>
                     </LogoLoader>
@@ -412,15 +405,9 @@ const LogoLoader = styled.div`
   }
 
   @keyframes spin_logo {
-    0% { transform: translateY(0); }
-    15% { transform: translateY(-100%); }
-    25% { transform: translateY(-100%); }
-    40% { transform: translateY(-200%); }
-    50% { transform: translateY(-200%); }
-    65% { transform: translateY(-300%); }
-    75% { transform: translateY(-300%); }
-    90% { transform: translateY(-400%); }
-    100% { transform: translateY(-400%); }
+    0%, 40% { transform: translateY(0); }
+    55%, 90% { transform: translateY(-100%); }
+    100% { transform: translateY(-200%); }
   }
 `;
 

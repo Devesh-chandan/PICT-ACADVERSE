@@ -2,12 +2,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger, DropdownMenuDescription } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { User, LogOut, Target } from "lucide-react";
+import { User, LogOut, Target, ShieldCheck } from "lucide-react";
 import { toast } from "sonner";
 import { useAuth } from "@/contexts/AuthContext";
 
 const ProfileDropdown = () => {
-    const { user, logout } = useAuth();
+    const { user, logout, isAdmin } = useAuth();
     const navigate = useNavigate();
 
     // Generate initials from user name
@@ -62,6 +62,15 @@ const ProfileDropdown = () => {
                         Progress Tracker
                     </DropdownMenuItem>
                 </Link>
+
+                {isAdmin && (
+                    <Link to="/admin">
+                        <DropdownMenuItem className="cursor-pointer font-medium">
+                            <ShieldCheck className="w-4 h-4 mr-2" />
+                            Admin Portal
+                        </DropdownMenuItem>
+                    </Link>
+                )}
 
                 <DropdownMenuSeparator />
 

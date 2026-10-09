@@ -16,7 +16,7 @@
 //   type Transition,
 //   type HTMLMotionProps 
 // } from "motion/react";
-// import { ShootingStars } from "@/components/ui/shooting-stars";
+// import { ShootingStars } from "@/components/effects/shooting-stars";
 // import { cn } from '@/lib/utils';
 // import { useTheme } from 'next-themes';
 
@@ -918,6 +918,7 @@
 
 
 import React, { useState, useCallback, useEffect, useRef, useMemo, forwardRef, MutableRefObject, CSSProperties, HTMLAttributes } from 'react';
+import { createPortal } from 'react-dom';
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, CheckCircle2, Sparkles, BookOpen, Activity, X, Maximize2 } from "lucide-react";
@@ -933,7 +934,7 @@ import {
   type Transition,
   type HTMLMotionProps
 } from "motion/react";
-import { ShootingStars } from "@/components/ui/shooting-stars";
+import { ShootingStars } from "@/components/effects/shooting-stars";
 import { cn } from '@/lib/utils';
 import { useTheme } from 'next-themes';
 
@@ -1063,17 +1064,22 @@ function StarsBackground({
 
 const ImagePreviewModal = ({ src, alt, isOpen, onClose }: { src: string; alt: string; isOpen: boolean; onClose: () => void }) => {
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
-    return () => {
-      document.body.style.overflow = 'unset';
+    if (!isOpen) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
     };
-  }, [isOpen]);
+    window.addEventListener('keydown', onKeyDown);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener('keydown', onKeyDown);
+    };
+  }, [isOpen, onClose]);
 
-  return (
+  // Rendered in a portal on <body>: inside the page it sat in a stacking context, so the
+  // fixed navbar (z-50) painted over the modal and swallowed clicks on the close button.
+  return createPortal(
     <AnimatePresence>
       {isOpen && (
         <motion.div
@@ -1081,12 +1087,17 @@ const ImagePreviewModal = ({ src, alt, isOpen, onClose }: { src: string; alt: st
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.3 }}
+          role="dialog"
+          aria-modal="true"
+          aria-label={alt}
           className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-md p-4 md:p-8"
           onClick={onClose}
         >
           <button
+            type="button"
+            aria-label="Close preview"
             onClick={onClose}
-            className="absolute top-6 right-6 md:top-8 md:right-8 p-2 rounded-full bg-white/10 hover:bg-white/20 text-white/70 hover:text-white transition-all z-50 pointer-events-auto"
+            className="absolute top-6 right-6 md:top-8 md:right-8 p-2 rounded-full bg-white/10 hover:bg-white/20 text-white/70 hover:text-white transition-all z-50 pointer-events-auto focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
           >
             <X className="w-8 h-8" />
           </button>
@@ -1107,7 +1118,8 @@ const ImagePreviewModal = ({ src, alt, isOpen, onClose }: { src: string; alt: st
           </motion.div>
         </motion.div>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body
   );
 };
 
@@ -1133,7 +1145,7 @@ const ScrollDownIndicator = () => {
 
 const CosmicButton = () => {
   return (
-    <Link to="/vault" className="pointer-events-auto">
+    <Link to="/pyqs" className="pointer-events-auto">
       <motion.div
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
@@ -1176,6 +1188,14 @@ const MacbookMockup = ({ src, alt, onPreview }: MacbookMockupProps) => {
             <img
               src={src}
               alt={alt}
+              width={1440}
+              height={900}
+              loading="lazy"
+              decoding="async"
+              onError={(e) => {
+                // Never show a broken-image icon inside the laptop frame
+                e.currentTarget.style.visibility = "hidden";
+              }}
               className="w-full h-full object-cover object-top transform transition-transform duration-700 group-hover/laptop:scale-[1.02]"
             />
 
@@ -1507,7 +1527,7 @@ const features = [
     subtitle: "All Previous Year Questions. One Powerful Library.",
     description: "Access a centralized vault of Previous Year Question Papers for all years, all exams, and the autonomous pattern. Study exactly what has appeared before.",
     tags: ["PYQs for Every Year", "All Exams Covered", "Distraction-Free"],
-    image: "https://iili.io/fOpPV3J.png",
+    image: "/screens/pyqs.jpg",
     icon: <BookOpen className="w-6 h-6 text-[#00ddeb]" />,
     color: "from-[#00ddeb]/20",
     hex: "#00ddeb",
@@ -1520,25 +1540,12 @@ const features = [
     subtitle: "Track Progress. Stay Consistent. Prepare Smarter.",
     description: "Your personal space to monitor progress, maintain study streaks, and stay exam-ready. Everything you need to plan, track, and improve—at one place.",
     tags: ["Streak Tracking", "Subject-wise Progress", "Exam Countdown"],
-    image: "Screenshot 2026-03-29 193736.png",
+    image: "/screens/dashboard.jpg",
     icon: <Activity className="w-6 h-6 text-[#28c840]" />,
     color: "from-[#28c840]/20",
     hex: "#28c840",
     link: "/dashboard",
     cta: "Go to Dashboard"
-  },
-  {
-    id: 3,
-    title: "Live Updates",
-    subtitle: "Never Miss an Exam or a New Paper.",
-    description: "Stay informed with real-time exam updates, new PYQ uploads, and important platform announcements—so you’re always a step ahead.",
-    tags: ["Exam Notifications", "New Upload Alerts", "Platform Updates"],
-    image: "Screenshot 2026-03-29 193717.png",
-    icon: <Sparkles className="w-6 h-6 text-[#febc2e]" />,
-    color: "from-[#febc2e]/20",
-    hex: "#febc2e",
-    link: "/updates",
-    cta: "View Updates"
   },
 ];
 

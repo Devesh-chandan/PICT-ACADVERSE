@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { API_BASE_URL } from "@/lib/api";
 import Navbar from "@/components/layout/Navbar";
 import {
   ResizableHandle,
@@ -18,44 +19,35 @@ import {
   FileText, Folder, Monitor, X, Loader2, BookOpen, Plus,
   // Subject Specific Icons
   Calculator, Atom, Bot, Zap, Terminal, FlaskConical, Palette,
-  Code2, Leaf, Cpu, Wifi, Activity, BrainCircuit, Briefcase
+  Code2, Leaf, Cpu, Wifi, Activity, BrainCircuit, Briefcase, Lock
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 
+// --- Types ---
+interface Paper {
+  _id: string;
+  subject: string;
+  year: string;
+  paperType: string;
+  title: string;
+  fileUrl: string;
+}
+interface OpenFile {
+  title: string;
+  subject: string;
+  url: string;
+}
+
 // --- Configuration ---
-const API_URL = import.meta.env.VITE_API_URL
-  ? `${import.meta.env.VITE_API_URL}/api/pyqs`
-  : "http://localhost:5000/api/pyqs";
+const API_URL = `${API_BASE_URL}/api/pyqs`;
 
 // --- Data Definitions ---
-const years = [
-  { id: "1", label: "Year 1", short: "FE" },
-  { id: "2", label: "Year 2", short: "SE" },
-  { id: "3", label: "Year 3", short: "TE" },
-  { id: "4", label: "Year 4", short: "BE" },
-];
+import { years, year1Subjects, branches, year2Subjects } from "@/data/academics";
+import { addRecentPaper } from "@/lib/recentPapers";
 
-const year1Subjects = [
-  "Linear Algebra and Calculus (LAC)", "Quantum Physics (QP)", "Mechanics for Robotics (MFR)",
-  "Integrated Electrical and Electronics Engineering (IEEE)", "C Programming for Problem Solving (CPPS)",
-  "Statistics and Integral Calculus (SIC)", "Chemical Science and Technology (CST)",
-  "Computer Graphics and Design (CGD)", "Object Oriented Programming Using C++ (OOPC)",
-  "Environment and Sustainable Engineering (ESE)"
-];
-
-const branches = [
-  "Computer Engineering", "Information Technology", "Electronics and Telecommunication Engineering",
-  "Artificial Intelligence & Data Science", "Electronics & Computer Engineering"
-];
-
-const year2Subjects: Record<string, string[]> = {
-  "Computer Engineering": ["Data Structures (DS)", "Computer Organisation and Architecture (COA)", "Discrete Mathematics (DM)"],
-  "Information Technology": ["Data Structures & Applications (DSA)", "Computer Network Technology (CNT)", "Entrepreneurial Software Development and Management (ESDM)"],
-  "Electronics and Telecommunication Engineering": ["Signals and Systems (S&S)", "Analog Circuit Design (ACD)", "Network Analysis and Synthesis (NAS)"],
-  "Artificial Intelligence & Data Science": ["Discrete Mathematics (DM)", "Data Structures (DS)", "Artificial Intelligence (AI)"],
-  "Electronics & Computer Engineering": ["Analog and Digital Electronics (ADE)", "Analog and Digital Electronics Lab (ADEL)", "Operating System (OS)", "Principles of Data Structure (PDS)"]
-};
+// Years whose papers are not published yet: shown in the selector but not selectable
+const COMING_SOON_YEARS = new Set(["4"]);
 
 // --- Components ---
 const SubjectIcon = ({ name }: { name: string }) => {
@@ -81,11 +73,11 @@ const SubjectIcon = ({ name }: { name: string }) => {
 
 const PYQs = () => {
   const [selectedYear, setSelectedYear] = useState("1");
-  const [papers, setPapers] = useState<any[]>([]);
+  const [papers, setPapers] = useState<Paper[]>([]);
   const [loading, setLoading] = useState(true);
 
   // --- TAB STATE MANAGEMENT ---
-  const [tabs, setTabs] = useState<{ id: number; file: any }[]>([{ id: Date.now(), file: null }]);
+  const [tabs, setTabs] = useState<{ id: number; file: OpenFile | null }[]>([{ id: Date.now(), file: null }]);
   const [activeTabId, setActiveTabId] = useState(tabs[0].id);
 
   // --- API CALLS ---
@@ -125,11 +117,12 @@ const PYQs = () => {
     }
   };
 
-  const handleFileSelect = (paper: any) => {
+  const handleFileSelect = (paper: Paper) => {
     const fileData = { title: paper.title, subject: paper.subject, url: paper.fileUrl };
     setTabs(tabs.map(tab =>
       tab.id === activeTabId ? { ...tab, file: fileData } : tab
     ));
+    addRecentPaper({ id: paper._id, title: paper.title, subject: paper.subject, year: paper.year, url: paper.fileUrl });
   };
 
   // --- RENDERING HELPERS ---
@@ -260,20 +253,28 @@ const PYQs = () => {
               {/* Year Selector */}
               <div className="p-3 border-b border-white/[0.08] bg-neutral-950/80 backdrop-blur-md">
                 <div className="grid grid-cols-4 gap-1 p-1 bg-white/[0.03] rounded-lg border border-white/[0.05]">
-                  {years.map((year) => (
-                    <button
-                      key={year.id}
-                      onClick={() => setSelectedYear(year.id)}
-                      className={cn(
-                        "py-1.5 px-2 text-[10px] font-semibold rounded-md transition-all uppercase tracking-wider",
-                        selectedYear === year.id
-                          ? "bg-white text-black shadow-sm"
-                          : "text-neutral-500 hover:text-neutral-300 hover:bg-white/[0.05]"
-                      )}
-                    >
-                      {year.short}
-                    </button>
-                  ))}
+                  {years.map((year) => {
+                    const comingSoon = COMING_SOON_YEARS.has(year.id);
+                    return (
+                      <button
+                        key={year.id}
+                        onClick={() => setSelectedYear(year.id)}
+                        disabled={comingSoon}
+                        title={comingSoon ? "Coming soon" : undefined}
+                        className={cn(
+                          "flex items-center justify-center gap-1 py-1.5 px-2 text-[10px] font-semibold rounded-md transition-all uppercase tracking-wider",
+                          comingSoon
+                            ? "cursor-not-allowed text-neutral-600"
+                            : selectedYear === year.id
+                              ? "bg-white text-black shadow-sm"
+                              : "text-neutral-500 hover:text-neutral-300 hover:bg-white/[0.05]"
+                        )}
+                      >
+                        {year.short}
+                        {comingSoon && <Lock className="w-2.5 h-2.5" aria-label="Coming soon" />}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
 
